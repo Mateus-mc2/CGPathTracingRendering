@@ -34,6 +34,6 @@
 *.obj
 *.pdb
 
-bin/
-PathTracing/intermediate/
-dependencies/
+PathTracing/bin/
+PathTracing/PathTracing/intermediate/
+PathTracing/dependencies/
