@@ -26,3 +26,14 @@
 *.exe
 *.out
 *.app
+
+# -- Project --
+*.suo
+*.sdf
+*.opensdf
+*.obj
+*.pdb
+
+bin/
+PathTracing/intermediate/
+dependencies/
