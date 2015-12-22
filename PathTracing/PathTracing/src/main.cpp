@@ -8,6 +8,7 @@
 #include <random>
 
 #include "quadric.h"
+#include "pnm_writer.h"
 
 using Eigen::MatrixXi;
 using Eigen::VectorXd;
@@ -40,5 +41,18 @@ int main() {
 
   cv::imshow("Teste", input);
   cv::waitKey(0);
+
+  //## Testando o pnm_writer
+  cv::Mat imagem = cv::imread("toreba.png");
+  cv::imshow("Jubiloca", imagem);
+  cv::waitKey(0);
+
+  io::PNMWriter pnm_mgr("../../../data/output/");
+  pnm_mgr.WritePNMFile(imagem);
+  // Teste colocando diretorio absoluto e nome do arquivo
+  //pnm_mgr.WritePNMFile(imagem, "C:/Users/rodrigo/Desktop/", "CG_do_sucesso");
+  //## 
+
+  
   return 0;
 }
