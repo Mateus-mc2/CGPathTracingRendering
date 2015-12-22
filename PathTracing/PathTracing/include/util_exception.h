@@ -12,7 +12,7 @@ class UtilException : public std::exception {
     explicit UtilException(const std::string &error) : kErrorMsg(error) {}
 
     const char* what() const { return this->kErrorMsg.c_str(); }
-}
+};
 
 }  // namespace util
 
