@@ -7,29 +7,13 @@
 
 #include "material.h"
 #include "ray.h"
+#include "util_exception.h"
 
 namespace util {
 
-enum Index {
-  a,
-  b,
-  c,
-  d,
-  e,
-  f,
-  g,
-  h,
-  j,
-  k
-};
-
-class InvalidCoefficientsVectorException : public std::exception {
-  private:
-    const std::string kErrorMsg;
+class InvalidCoefficientsVectorException : public UtilException {
   public:
-    explicit InvalidCoefficientsVectorException(const std::string &error) : kErrorMsg(error) {}
-
-    const char* what() const;
+    InvalidCoefficientsVectorException(const std::string &error_msg) : UtilException(error_msg) {}
 };
 
 class Quadric {
@@ -48,6 +32,10 @@ class Quadric {
   private:
     Eigen::VectorXd coefficients_;
     Material material_;
+
+    enum Index {kCoeffA, kCoeffB, kCoeffC, kCoeffD,
+                kCoeffE, kCoeffF, kCoeffG, kCoeffH,
+                kCoeffJ, kCoeffK};
 };
 
 }  // namespace util

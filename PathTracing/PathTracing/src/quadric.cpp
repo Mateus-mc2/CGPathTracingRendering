@@ -9,6 +9,12 @@ Quadric::Quadric(const VectorXd &coefficients, const Material &material) : mater
   if (coefficients.size() != 10) {
     throw InvalidCoefficientsVectorException("Coefficients' vector doesn't have a valid size.");
   }
+
+  this->coefficients_.resize(10);
+
+  for (int i = 0; i < 10; ++i) {
+    this->coefficients_(i) = coefficients(i);
+  }
 }
 
 }  // namespace util

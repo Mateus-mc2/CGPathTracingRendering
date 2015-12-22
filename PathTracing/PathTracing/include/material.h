@@ -1,7 +1,15 @@
 #ifndef MATERIAL_H_
 #define MATERIAL_H_
 
+#include "util_exception.h"
+
 namespace util {
+
+class InvalidMaterialCoefficientsException : public UtilException {
+  public:
+    InvalidMaterialCoefficientsException(const std::string &error_msg)
+        : UtilException(error_msg) {}
+};
 
 struct Material {
   Material (const double &r, const double &g, const double &b, const double &k_a,
