@@ -59,7 +59,7 @@ double Quadric::GetIntesectionParameter(const Ray &ray) {
   } else {
     double discriminant = kB*kB - 4*kA*kC;
 
-    if (discriminant < this->kEps) {
+    if (discriminant < 0.0) {
       // No real roots.
       return -1.0;
     }
