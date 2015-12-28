@@ -8,6 +8,7 @@
 #include <random>
 
 #include "quadric.h"
+#include "pnm_writer.h"
 
 using Eigen::MatrixXi;
 using Eigen::VectorXd;
