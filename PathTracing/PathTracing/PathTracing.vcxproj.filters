@@ -39,6 +39,9 @@
     <ClCompile Include="src\pnm_writer.cpp">
       <Filter>Source Files\io</Filter>
     </ClCompile>
+    <ClCompile Include="src\triangular_object.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\light.h">
@@ -61,6 +64,12 @@
     </ClInclude>
     <ClInclude Include="include\pnm_writer.h">
       <Filter>Header Files\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\camera.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\triangular_object.h">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

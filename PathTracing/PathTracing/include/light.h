@@ -5,14 +5,27 @@
 
 namespace util {
 
-struct Light {
-  Light(const Eigen::Vector3d &direction, double intensity)
-      : direction(direction),
+struct PointLight {
+  PointLight(const Eigen::Vector3d &position, const double red, const double green,
+             const double blue, const double intensity)
+      : position(position),
+        red(red),
+        green(green),
+        blue(blue),
         intensity(intensity) {}
-  ~Light() {}
+  ~PointLight() {}
       
-  Eigen::Vector3d direction;
+  Eigen::Vector3d position;
+
+  double red;
+  double green;
+  double blue;  
+
   double intensity;
+};
+
+struct ExtenseLight {
+
 };
 
 }  // namespace util

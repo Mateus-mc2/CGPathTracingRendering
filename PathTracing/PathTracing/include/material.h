@@ -13,7 +13,7 @@ class InvalidMaterialCoefficientsException : public UtilException {
 
 struct Material {
   Material(const double &r, const double &g, const double &b, const double &k_a,
-            const double &k_d, const double &k_s, const int &n);
+            const double &k_d, const double &k_s, const double &k_t, const int &n);
   ~Material() {}
   
   double red;  // Componente vermelha.
@@ -23,6 +23,7 @@ struct Material {
   double k_a;  // Coeficiente de reflexão ambiente.
   double k_d;  // Coeficiente de reflexão difusa.
   double k_s;  // Coeficiente de reflexão especular.
+  double k_t;  // Coeficiente de transparência.
 
   int n;  // Expoente de reflexão especular.
 };

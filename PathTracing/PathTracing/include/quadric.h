@@ -19,6 +19,7 @@ class InvalidCoefficientsVectorException : public UtilException {
 
 class Quadric {
   public:
+    // See http://mathworld.wolfram.com/QuadraticSurface.html to understand this notation.
     enum Index {kCoeffA, kCoeffB, kCoeffC,
                 kCoeffF, kCoeffG, kCoeffH,
                 kCoeffP, kCoeffQ, kCoeffR,
@@ -39,10 +40,7 @@ class Quadric {
     static const double kEps;
 
     Eigen::VectorXd coefficients_;
-    Material material_;
-
-    // See http://mathworld.wolfram.com/QuadraticSurface.html to understand this notation.
-    
+    Material material_;    
 };
 
 }  // namespace util

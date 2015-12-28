@@ -45,7 +45,7 @@ double Quadric::GetIntesectionParameter(const Ray &ray) {
   const double kA = a*dx*dx + b*dy*dy + c*dz*dz + 2*(f*dy*dz + g*dx*dz + h*dx*dy);
   const double kB = 2*(a*x_0*dx + b*y_0*dy + c*z_0*dz + f*(dz*y_0 + dy*z_0) + g*(dz*x_0 + dx*z_0)
                     + h*(dy*x_0 + dx*y_0) + p*dx + q*dy+ r*dz);
-  const double kC = a* x_0*x_0 + b*y_0*y_0 + c*z_0*z_0 + d + 2*(f*y_0*z_0 + g*x_0*z_0 + h*x_0*y_0
+  const double kC = a*x_0*x_0 + b*y_0*y_0 + c*z_0*z_0 + d + 2*(f*y_0*z_0 + g*x_0*z_0 + h*x_0*y_0
                     + p*x_0 + q*y_0 + r*z_0);
 
   if (math::IsAlmostEqual(kA, 0.0, this->kEps)) {
@@ -62,14 +62,17 @@ double Quadric::GetIntesectionParameter(const Ray &ray) {
     if (discriminant < 0.0) {
       // No real roots.
       return -1.0;
-    }
+    } else if (math::IsAlmostEqual(discriminant, 0.0, this->kEps)) {
+      t = (-kB) / 2*kA;
+    } else {
+      double sqrt_delta = std::sqrt(discriminant);
+      // Gets the nearest point in front of the ray center.
+      t = (-kB - sqrt_delta) / 2*kA;
 
-    double sqrt_delta = std::sqrt(discriminant);
-    // Gets the nearest point in front of the ray center.
-    t = (-kB - sqrt_delta) / 2*kA;
-
-    if (t < 0.0) {  // It is behind the ray center.
-      t = (-kB + sqrt_delta) / 2*kA;
+      if (t < 0.0 || math::IsAlmostEqual(t, 0.0, this->kEps)) {
+        // It is behind/coincident with the ray center.
+        t = (-kB + sqrt_delta) / 2*kA;
+      }
     }
   }
 

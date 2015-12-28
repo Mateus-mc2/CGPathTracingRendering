@@ -28,7 +28,7 @@ int main() {
   }
 
   try {
-    util::Material mat(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 10);
+    util::Material mat(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 10);
     util::Quadric random_quadric(v, mat);
 
     std::cout << v << std::endl << "------" << std::endl;
