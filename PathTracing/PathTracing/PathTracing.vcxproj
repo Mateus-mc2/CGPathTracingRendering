@@ -92,6 +92,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\opencv_2.4.10.1\install\$(PlatformShortName)\vc11\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_core2410d.lib;opencv_highgui2410d.lib;opencv_imgproc2410d.lib;opencv_calib3d2410d.lib;opencv_gpu2410d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -105,6 +106,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\opencv_2.4.10.1\install\$(PlatformShortName)\vc11\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_core2410d.lib;opencv_highgui2410d.lib;opencv_imgproc2410d.lib;opencv_calib3d2410d.lib;opencv_gpu2410d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -122,6 +124,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\opencv_2.4.10.1\install\$(PlatformShortName)\vc11\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_core2410.lib;opencv_highgui2410.lib;opencv_imgproc2410.lib;opencv_calib3d2410.lib;opencv_gpu2410.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -145,13 +148,12 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\material.cpp" />
-    <ClCompile Include="src\pnm_writer.cpp" />
     <ClCompile Include="src\quadric.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\light.h" />
     <ClInclude Include="include\material.h" />
-    <ClInclude Include="include\pnm_writer.h" />
+    <ClInclude Include="include\math_lib.h" />
     <ClInclude Include="include\quadric.h" />
     <ClInclude Include="include\ray.h" />
     <ClInclude Include="include\util_exception.h" />

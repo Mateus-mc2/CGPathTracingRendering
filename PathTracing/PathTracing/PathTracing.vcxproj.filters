@@ -16,28 +16,16 @@
     <Filter Include="Header Files\utils">
       <UniqueIdentifier>{aa20e3ad-586d-4be0-b380-f6578135e86c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\io">
-      <UniqueIdentifier>{93d63de7-aace-4344-8a2f-a3bd7e1f3cb9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\io">
-      <UniqueIdentifier>{ff32684d-6447-4abf-a029-d70f470a192d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\utils">
-      <UniqueIdentifier>{8acd72a4-74cb-498f-a522-bf1da5a0c531}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\material.cpp">
-      <Filter>Source Files\utils</Filter>
-    </ClCompile>
     <ClCompile Include="src\quadric.cpp">
-      <Filter>Source Files\utils</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\pnm_writer.cpp">
-      <Filter>Source Files\io</Filter>
+    <ClCompile Include="src\material.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -56,8 +44,8 @@
     <ClInclude Include="include\util_exception.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="include\pnm_writer.h">
-      <Filter>Header Files\io</Filter>
+    <ClInclude Include="include\math_lib.h">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
