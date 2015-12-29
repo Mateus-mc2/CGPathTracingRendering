@@ -66,12 +66,12 @@ int main() {
   }
 
   //## Testando o pnm_writer
-  cv::Mat imagem = cv::imread("toreba.png");
-  cv::imshow("Jubiloca", imagem);
+  cv::Mat toreba = cv::imread("../../../data/input/toreba.png");
+  cv::imshow("Jubiloca", toreba);
   cv::waitKey(0);
 
   io::PNMWriter pnm_mgr("../../../data/output/");
-  pnm_mgr.WritePNMFile(imagem);
+  pnm_mgr.WritePNMFile(toreba);
   // Teste colocando diretorio absoluto e nome do arquivo
   //pnm_mgr.WritePNMFile(imagem, "C:/Users/rodrigo/Desktop/", "CG_do_sucesso");
   //## 

@@ -52,4 +52,4 @@ std::string PNMWriter::DateString() const {
   strftime(buffer, 200, "imagem-%Y.%m.%d-%H.%M.%S", &timeinfo);
   return std::string(buffer);
 }
-}  // namespace util
+}  // namespace io

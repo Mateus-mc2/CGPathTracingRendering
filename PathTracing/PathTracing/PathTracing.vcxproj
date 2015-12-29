@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="sdl_reader.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\pnm_writer.cpp" />
@@ -162,6 +163,8 @@
     <ClInclude Include="include\ray.h" />
     <ClInclude Include="include\triangular_object.h" />
     <ClInclude Include="include\util_exception.h" />
+    <ClInclude Include="sdl_object.h" />
+    <ClInclude Include="sdl_reader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
