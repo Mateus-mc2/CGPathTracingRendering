@@ -52,6 +52,8 @@ bool TriangularObject::IsInnerPoint(const Vector3d barycentric_coordinates) cons
           alpha <= 1 && beta <= 1 && gamma <= 1);
 }
 
+// TODO(Mateus): avaliar se é melhor calcular a interseção de um raio e uma dada face,
+// em vez de calcular a interseção de um raio com todas as faces do objeto.
 Vector3d TriangularObject::GetIntersectionParameters(const Ray &ray) {
   // Ray parameters (origin and direction).
   double x_0 = ray.origin(0);
@@ -62,6 +64,7 @@ Vector3d TriangularObject::GetIntersectionParameters(const Ray &ray) {
   double dy = ray.direction(1);
   double dz = ray.direction(2);
 
+  // Parameters to return.
   double min_t = 0.0;
   Vector3d parameters;
 
