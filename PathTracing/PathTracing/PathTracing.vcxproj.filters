@@ -13,16 +13,16 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\utils">
-      <UniqueIdentifier>{aa20e3ad-586d-4be0-b380-f6578135e86c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\io">
       <UniqueIdentifier>{a2554e0b-1815-4be5-9d85-bbbee2c51c12}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\io">
       <UniqueIdentifier>{75ec7790-a5f9-4ce4-b2b2-83c881783bfc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\utils">
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{aa20e3ad-586d-4be0-b380-f6578135e86c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
       <UniqueIdentifier>{8a01da3d-9bdf-4f5d-8c78-4edc27569303}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -31,45 +31,54 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\material.cpp">
-      <Filter>Source Files\utils</Filter>
+      <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="src\quadric.cpp">
-      <Filter>Source Files\utils</Filter>
+      <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="src\pnm_writer.cpp">
       <Filter>Source Files\io</Filter>
     </ClCompile>
     <ClCompile Include="src\triangular_object.cpp">
-      <Filter>Source Files\utils</Filter>
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="sdl_reader.cpp">
+      <Filter>Source Files\io</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\light.h">
-      <Filter>Header Files\utils</Filter>
+      <Filter>Header Files\util</Filter>
     </ClInclude>
     <ClInclude Include="include\material.h">
-      <Filter>Header Files\utils</Filter>
+      <Filter>Header Files\util</Filter>
     </ClInclude>
     <ClInclude Include="include\ray.h">
-      <Filter>Header Files\utils</Filter>
+      <Filter>Header Files\util</Filter>
     </ClInclude>
     <ClInclude Include="include\quadric.h">
-      <Filter>Header Files\utils</Filter>
+      <Filter>Header Files\util</Filter>
     </ClInclude>
     <ClInclude Include="include\util_exception.h">
-      <Filter>Header Files\utils</Filter>
+      <Filter>Header Files\util</Filter>
     </ClInclude>
     <ClInclude Include="include\math_lib.h">
-      <Filter>Header Files\utils</Filter>
+      <Filter>Header Files\util</Filter>
     </ClInclude>
     <ClInclude Include="include\pnm_writer.h">
       <Filter>Header Files\io</Filter>
     </ClInclude>
     <ClInclude Include="include\camera.h">
-      <Filter>Header Files\utils</Filter>
+      <Filter>Header Files\util</Filter>
     </ClInclude>
     <ClInclude Include="include\triangular_object.h">
-      <Filter>Header Files\utils</Filter>
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="sdl_reader.h">
+      <Filter>Header Files\io</Filter>
+    </ClInclude>
+    <ClInclude Include="sdl_object.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
