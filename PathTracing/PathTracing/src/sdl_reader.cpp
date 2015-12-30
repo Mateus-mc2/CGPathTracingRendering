@@ -130,7 +130,7 @@ namespace io {
           util::Material new_material(red, green, blue, ka, kd, ks, kt, n);
           util::Quadric  new_quadric(a, b, c, d, e, f, g, h, j, k, new_material);
           std::cout << "Lido 'objectquadric': " << "te dana, mt coisa pra imprimir :P" <<std::endl;
-
+          sdl_object.quadrics_objects_.push_back(new_quadric);
         } else if (word == "object") {         // Objetos baseados em malhas trianguladas
           // TODO(figueiredo) implementar direito
           std::string commentary;

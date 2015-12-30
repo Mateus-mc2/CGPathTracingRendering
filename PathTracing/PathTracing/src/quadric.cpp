@@ -81,15 +81,15 @@ double Quadric::GetIntesectionParameter(const Ray &ray) {
       // No real roots.
       return -1.0;
     } else if (math::IsAlmostEqual(discriminant, 0.0, this->kEps)) {
-      t = (-kB) / 2*kA;
+      t = (-kB) / (2*kA);
     } else {
       double sqrt_delta = std::sqrt(discriminant);
       // Gets the nearest point in front of the ray center.
-      t = (-kB - sqrt_delta) / 2*kA;
+      t = (-kB - sqrt_delta) / (2*kA);
 
       if (t < 0.0 || math::IsAlmostEqual(t, 0.0, this->kEps)) {
         // It is behind/coincident with the ray center.
-        t = (-kB + sqrt_delta) / 2*kA;
+        t = (-kB + sqrt_delta) / (2*kA);
       }
     }
   }

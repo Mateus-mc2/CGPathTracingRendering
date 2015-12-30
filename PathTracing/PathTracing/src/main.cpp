@@ -13,6 +13,8 @@
 
 using Eigen::MatrixXi;
 using Eigen::VectorXd;
+using Eigen::Vector3d;
+using Eigen::Vector4d;
 
 int main() {
   MatrixXi I = MatrixXi::Identity(480, 480);
@@ -83,6 +85,18 @@ int main() {
   io::SDLReader sdl_reader;
   util::SDLObject sdl_object;
   sdl_reader.ReadSDL("../../../data/input/", "test", sdl_object);
+
+
+  // ## Mandando um raio na quádrica.
+  util::Quadric paraboloid = sdl_object.quadrics_objects_[0];
+  
+  Vector3d p_0(1.0, -1.0, 0.0);
+  Vector3d v_2(-1.0, 1.0, 1.0);  // r: P = P_0 + t*v_2, onde t é um escalar.
+  int depth = 1;
+
+  util::Ray line(p_0, v_2, depth);
+  // Resultado deve ser t = 0.5
+  std::cout << "Intersecao: " << paraboloid.GetIntesectionParameter(line) << std::endl;
 
   return 0;
 }

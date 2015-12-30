@@ -18,8 +18,8 @@ npaths 10
 tonemapping 1.0
 seed 9
 
-# TESTANDO QUADRICA
-objectquadric 1.0 2.0 1.0 2.0 1.0 2.0 1.0 2.0 1.0 2.0 1.0 1 1 1 1 0 0 1
+# TESTANDO QUADRICA - equação paramétrica: x^2 + y^2 - z^2 = 0 (paraboloide).
+objectquadric 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 -0.5 0.0 1 1 1 1 1 0 0 1
 
 # Aqui comeca a definicao das geometrias
 # Um arquivo para cada parede
