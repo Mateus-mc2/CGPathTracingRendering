@@ -15,6 +15,23 @@ Quadric::Quadric(const VectorXd &coefficients, const Material &material)
   }
 }
 
+Quadric::Quadric(const double &a, const double &b, const double &c, const double &f,
+                 const double &g, const double &h, const double &p, const double &q,
+                 const double &r, const double &d, const Material &material) 
+                 :  material_(material) {
+  this->coefficients_(this->kCoeffA) = a;
+  this->coefficients_(this->kCoeffB) = b;
+  this->coefficients_(this->kCoeffC) = c;
+  this->coefficients_(this->kCoeffF) = f;
+  this->coefficients_(this->kCoeffG) = g;
+  this->coefficients_(this->kCoeffH) = h;
+  this->coefficients_(this->kCoeffP) = p;
+  this->coefficients_(this->kCoeffQ) = q;
+  this->coefficients_(this->kCoeffR) = r;
+  this->coefficients_(this->kCoeffD) = d;
+}
+
+
 double Quadric::GetIntesectionParameter(const Ray &ray) {
   // Coefficients.
   double a = this->coefficients_(this->kCoeffA);
