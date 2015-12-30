@@ -19,13 +19,9 @@ struct PointLight {
 
   double red;
   double green;
-  double blue;  
+  double blue;
 
   double intensity;
-};
-
-struct ExtenseLight {
-
 };
 
 }  // namespace util
