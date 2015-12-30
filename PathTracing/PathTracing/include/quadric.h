@@ -28,7 +28,7 @@ class Quadric {
     Quadric(const Eigen::VectorXd &coefficients, const Material &material);
     Quadric(const double &a, const double &b, const double &c, const double &d,
             const double &e, const double &f, const double &g, const double &h,
-            const double &j, const double &k, const Material &material);
+            const double &j, const double &k, const Material &material) {}; // TODO: FALTA IMPLEMENTAR ISSO
     ~Quadric() {}
 
     double GetIntesectionParameter(const Ray &ray);

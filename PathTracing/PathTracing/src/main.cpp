@@ -9,6 +9,7 @@
 
 #include "quadric.h"
 #include "pnm_writer.h"
+#include "sdl_reader.h"
 
 using Eigen::MatrixXi;
 using Eigen::VectorXd;
@@ -75,5 +76,13 @@ int main() {
   // Teste colocando diretorio absoluto e nome do arquivo
   //pnm_mgr.WritePNMFile(imagem, "C:/Users/rodrigo/Desktop/", "CG_do_sucesso");
   //## 
+
+
+  // ## Teste rabugento
+  std::cout << "\n## Comeco do teste de leitura de arquivo" << std::endl;
+  io::SDLReader sdl_reader;
+  util::SDLObject sdl_object;
+  sdl_reader.ReadSDL("../../../data/input/", "test", sdl_object);
+
   return 0;
 }

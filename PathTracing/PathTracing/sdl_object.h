@@ -20,6 +20,7 @@
 namespace util {
 
 struct SDLObject {
+  SDLObject(){};
   SDLObject(const std::string &file_name,
             const Camera &camera,
             const Eigen::Vector3d &background_color,
@@ -47,18 +48,18 @@ struct SDLObject {
 
   ~SDLObject();
 
-  const std::string                   file_name_;
-  const Camera                        camera_;
-  const Eigen::Vector3d               background_color_;
-  const double                        ambient_light_intensity_;
-  const std::vector<PointLight>       point_lights_;
-  const std::vector<TriangularObject> extense_lights_;
-  const int                           nmbr_paths_;
-  const int                           max_depth_;
-  const double                        tone_mapping_;
-  const int                           random_seed_;
-  const std::vector<Quadric>          quadrics_objects_;
-  const std::vector<TriangularObject> triangular_objects_;
+  std::string                   file_name_;
+  Camera                        camera_;
+  Eigen::Vector3d               background_color_;
+  double                        ambient_light_intensity_;
+  std::vector<PointLight>       point_lights_;
+  std::vector<TriangularObject> extense_lights_;
+  int                           nmbr_paths_;
+  int                           max_depth_;
+  double                        tone_mapping_;
+  int                           random_seed_;
+  std::vector<Quadric>          quadrics_objects_;
+  std::vector<TriangularObject> triangular_objects_;
 };
 
 }  // namespace util

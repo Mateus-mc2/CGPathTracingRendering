@@ -42,7 +42,7 @@
     <ClCompile Include="src\triangular_object.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="sdl_reader.cpp">
+    <ClCompile Include="src\sdl_reader.cpp">
       <Filter>Source Files\io</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,10 +74,10 @@
     <ClInclude Include="include\triangular_object.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="sdl_reader.h">
+    <ClInclude Include="include\sdl_reader.h">
       <Filter>Header Files\io</Filter>
     </ClInclude>
-    <ClInclude Include="sdl_object.h">
+    <ClInclude Include="include\sdl_object.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,6 +12,7 @@ class InvalidMaterialCoefficientsException : public UtilException {
 };
 
 struct Material {
+  Material () {}
   Material(const double &r, const double &g, const double &b, const double &k_a,
             const double &k_d, const double &k_s, const double &k_t, const int &n);
   ~Material() {}
