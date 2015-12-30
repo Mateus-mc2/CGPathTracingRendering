@@ -19,6 +19,7 @@ Quadric::Quadric(const double &a, const double &b, const double &c, const double
                  const double &g, const double &h, const double &p, const double &q,
                  const double &r, const double &d, const Material &material) 
                  :  material_(material) {
+  this->coefficients_.resize(10);
   this->coefficients_(this->kCoeffA) = a;
   this->coefficients_(this->kCoeffB) = b;
   this->coefficients_(this->kCoeffC) = c;
