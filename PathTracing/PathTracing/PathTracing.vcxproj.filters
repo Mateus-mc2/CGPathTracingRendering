@@ -45,6 +45,9 @@
     <ClCompile Include="src\sdl_reader.cpp">
       <Filter>Source Files\io</Filter>
     </ClCompile>
+    <ClCompile Include="src\obj_reader.cpp">
+      <Filter>Source Files\io</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\light.h">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="include\sdl_object.h">
       <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\obj_reader.h">
+      <Filter>Header Files\io</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -31,7 +31,6 @@
 *.suo
 *.sdf
 *.opensdf
-*.obj
 *.pdb
 
 PathTracing/bin/

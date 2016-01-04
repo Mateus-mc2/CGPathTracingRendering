@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\material.cpp" />
+    <ClCompile Include="src\obj_reader.cpp" />
     <ClCompile Include="src\pnm_writer.cpp" />
     <ClCompile Include="src\quadric.cpp" />
     <ClCompile Include="src\sdl_reader.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="include\light.h" />
     <ClInclude Include="include\material.h" />
     <ClInclude Include="include\math_lib.h" />
+    <ClInclude Include="include\obj_reader.h" />
     <ClInclude Include="include\pnm_writer.h" />
     <ClInclude Include="include\quadric.h" />
     <ClInclude Include="include\ray.h" />

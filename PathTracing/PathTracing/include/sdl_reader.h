@@ -26,7 +26,7 @@ class SDLReader {
     SDLReader() {};
     ~SDLReader () {};
 
-    void ReadSDL(std::string file_directory, std::string file_name, util::SDLObject &sdl_object);
+    util::SDLObject ReadSDL(std::string file_directory, std::string file_name);
 
 };
 

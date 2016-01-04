@@ -31,7 +31,7 @@ int main() {
   }
 
   try {
-    util::Material mat(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 10);
+    util::Material mat(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 10, 0);
     util::Quadric random_quadric(v, mat);
 
     std::cout << v << std::endl << "------" << std::endl;
@@ -83,8 +83,7 @@ int main() {
   // ## Teste rabugento
   std::cout << "\n## Comeco do teste de leitura de arquivo" << std::endl;
   io::SDLReader sdl_reader;
-  util::SDLObject sdl_object;
-  sdl_reader.ReadSDL("../../../data/input/", "test", sdl_object);
+  util::SDLObject sdl_object = sdl_reader.ReadSDL("../../../data/input/Cornell box scene/", "test.sdl");
 
 
   // ## Mandando um raio na quádrica.

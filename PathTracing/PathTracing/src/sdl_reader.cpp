@@ -1,8 +1,8 @@
 #include "sdl_reader.h"
+#include "obj_reader.h"
 
 namespace io {
-  void SDLReader::ReadSDL(std::string file_directory, std::string file_name,
-                          util::SDLObject &sdl_object) {
+  util::SDLObject SDLReader::ReadSDL(std::string file_directory, std::string file_name) {
     // Preparar todas as variaveis que receberao os dados para a criacao do sdl_object
     std::string                         output_name;
     Eigen::Vector3d                     eye;
@@ -21,7 +21,7 @@ namespace io {
     std::vector<util::Quadric>          quadrics_objects;
     std::vector<util::TriangularObject> triangular_objects;
 
-    std::ifstream sdl_file(file_directory + (file_name + ".sdl"));
+    std::ifstream sdl_file(file_directory + file_name);
     std::string word;
 
     // Ler todas as linhas
@@ -30,7 +30,7 @@ namespace io {
         if (word[0] == '#') {                  // Comentario
           std::string commentary;
           std::getline(sdl_file, commentary);
-          std::cout << "lido #" << commentary << std::endl;
+          std::cout << "Lido #" << commentary << std::endl;
 
         } else if (word == "output") {         // Nome do arquivo de saida
           sdl_file >> output_name;
@@ -77,17 +77,44 @@ namespace io {
           std::cout << "Lido 'ambient': " << ambient_light_intensity << std::endl;
 
         } else if (word == "light") {          // Luzes extensas
-          // TODO(figueiredo) implementar direito
-          std::string commentary;
-          std::getline(sdl_file, commentary);
-          std::cout << "@" << commentary << std::endl;
+          std::string obj_file_name;
+          double red, green, blue, lp;
+
+          sdl_file >> obj_file_name;
+          sdl_file >> red;
+          sdl_file >> green;
+          sdl_file >> blue;
+          sdl_file >> lp;
+
+          util::Material new_material(red, green, blue, 0, 0, 0, 0, 1, lp);
+
+          std::vector<Eigen::Vector3d> new_vertices;
+          std::vector<Eigen::Vector3i> new_faces;
+
+          io::OBJReader obj_reader;
+          obj_reader.ReadOBJ(file_directory, obj_file_name, new_vertices, new_faces);
+          util::TriangularObject new_triangular_obj(new_material, new_vertices, new_faces, true);
+
+          extense_lights.push_back(new_triangular_obj);
+          std::cout << "@ Lida a luz " << obj_file_name << std::endl;
 
         } else if (word == "pointlight") {     // Luzes pontuais
                                                // Nao existe no formato original da especificacao
-          // TODO(figueiredo) implementar direito
-          std::string commentary;
-          std::getline(sdl_file, commentary);
-          std::cout << "@" << commentary << std::endl;
+          double x, y, z, r, g, b, intensity;
+          sdl_file >> x;
+          sdl_file >> y;
+          sdl_file >> z;
+          sdl_file >> r;
+          sdl_file >> g;
+          sdl_file >> b;
+          sdl_file >> intensity;
+
+          Eigen::Vector3d new_position(x, y, z);
+          util::PointLight new_point_light(new_position, r, g, b, intensity);
+
+          point_lights.push_back(new_point_light);
+
+          std::cout << "Lido 'pointlight': " << r << " " << g << " " << b << " " << intensity << std::endl;
 
         } else if (word == "npaths") {         // Numero de raios por pixel
           sdl_file >> nmbr_paths;
@@ -127,26 +154,53 @@ namespace io {
           sdl_file >> kt;
           sdl_file >> n;
 
-          util::Material new_material(red, green, blue, ka, kd, ks, kt, n);
+          util::Material new_material(red, green, blue, ka, kd, ks, kt, n, 0);
           util::Quadric  new_quadric(a, b, c, d, e, f, g, h, j, k, new_material);
+
+          quadrics_objects.push_back(new_quadric);
           std::cout << "Lido 'objectquadric': " << "te dana, mt coisa pra imprimir :P" <<std::endl;
           sdl_object.quadrics_objects_.push_back(new_quadric);
         } else if (word == "object") {         // Objetos baseados em malhas trianguladas
-          // TODO(figueiredo) implementar direito
-          std::string commentary;
-          std::getline(sdl_file, commentary);
-          std::cout << "@" << commentary << std::endl;
+          std::string obj_file_name;
+          double red, green, blue, ka, kd, ks, kt, n;
+
+          sdl_file >> obj_file_name;
+          sdl_file >> red;
+          sdl_file >> green;
+          sdl_file >> blue;
+          sdl_file >> ka;
+          sdl_file >> kd;
+          sdl_file >> ks;
+          sdl_file >> kt;
+          sdl_file >> n;
+
+          util::Material new_material(red, green, blue, ka, kd, ks, kt, n, 0);
+
+          std::vector<Eigen::Vector3d> new_vertices;
+          std::vector<Eigen::Vector3i> new_faces;
+
+          io::OBJReader obj_reader;
+          obj_reader.ReadOBJ(file_directory, obj_file_name, new_vertices, new_faces);
+          util::TriangularObject new_triangular_obj(new_material, new_vertices, new_faces, false);
+
+          triangular_objects.push_back(new_triangular_obj);
+          std::cout << "@ Lido o objeto " << obj_file_name << std::endl;
 
         } else {
-          std::cout << "  BORA BOY! tolken nao suportado: " << word << std::endl;
+          std::cout << "  BORA BOY! token nao suportado: " << word << std::endl;
           std::cout << "    Leitura interrompida." << std::endl;
           sdl_file.close();
-          return;  // BORA BOY! tolken nao suportado
+          return util::SDLObject();  // BORA BOY! token nao suportado
         }
       }
 
-      std::cout << "## Arquivo SDL lido com sucesso" << std::endl;
-      sdl_file.close();
+    sdl_file.close();
+    std::cout << "## Arquivo SDL " << file_name << " lido com sucesso" << std::endl;
+
+    util::Camera new_camera(eye, bottom, top, width, height);
+    return util::SDLObject(output_name, new_camera, background_color, ambient_light_intensity,
+                           point_lights, extense_lights, nmbr_paths, max_depth, tone_mapping,
+                           random_seed, quadrics_objects, triangular_objects);
     }
   }
 }  // namespace io
