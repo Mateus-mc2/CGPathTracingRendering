@@ -52,17 +52,8 @@ bool TriangularObject::IsInnerPoint(const Vector3d barycentric_coordinates) cons
           alpha <= 1 && beta <= 1 && gamma <= 1);
 }
 
-// TODO(Mateus): avaliar se é melhor calcular a interseção de um raio e uma dada face,
-// em vez de calcular a interseção de um raio com todas as faces do objeto.
-Vector3d TriangularObject::GetIntersectionParameters(const Ray &ray) {
-  // Ray parameters (origin and direction).
-  double x_0 = ray.origin(0);
-  double y_0 = ray.origin(1);
-  double z_0 = ray.origin(2);
-
-  double dx = ray.direction(0);
-  double dy = ray.direction(1);
-  double dz = ray.direction(2);
+double TriangularObject::GetIntersectionParameter(const Ray &ray) {
+  Vector4d ray_origin(ray.origin(0), ray.origin(1), ray.origin(2), 1);
 
   // Parameters to return.
   double min_t = 0.0;
@@ -70,15 +61,20 @@ Vector3d TriangularObject::GetIntersectionParameters(const Ray &ray) {
 
   // Get nearest intersection point - need to check every single face of the object.
   for (int i = 0; i < this->planes_coeffs_.size(); ++i) {
-    // Plane coefficients.
-    const double kA = this->planes_coeffs_[i](0);
-    const double kB = this->planes_coeffs_[i](1);
-    const double kC = this->planes_coeffs_[i](2);
-    const double kD = this->planes_coeffs_[i](3);
+    const double kNumerator = -(this->planes_coeffs_[i].dot(ray_origin));
+    const double kDenominator = this->planes_coeffs_[i].dot(ray.direction);
 
-    double curr_t = - (kA*x_0 + kB*y_0 + kC*z_0 + kD) / (kA*dx + kB*dy + kC*dz);
-    Vector3d intersection_point(x_0 + dx*curr_t, y_0 + dy*curr_t, z_0 + dz*curr_t);
-    Vector3d barycentric_coords = this->linear_systems_[i]*intersection_point;
+    // Test if the ray and this plane are parallel (or if this plane contains the ray).
+    // Returns a negative (dummy) parameter t if this happens.
+    if (math::IsAlmostEqual(kDenominator, 0.0, this->kEps)) {
+      return -1.0;
+    }
+
+    double curr_t = kNumerator / kDenominator;
+    Vector3d intersection_point(ray.origin(0) + ray.direction(0)*curr_t,
+                                ray.origin(1) + ray.direction(1)*curr_t,
+                                ray.origin(2) + ray.direction(2)*curr_t);
+    Vector3d barycentric_coords = this->linear_systems_[i]*intersection_point;  // x = A^(-1)*b.
 
     if (this->IsInnerPoint(barycentric_coords) && min_t > curr_t && curr_t > this->kEps) {
       min_t = curr_t;
@@ -86,7 +82,7 @@ Vector3d TriangularObject::GetIntersectionParameters(const Ray &ray) {
     }
   }
 
-  return parameters;
+  return min_t;
 }
 
 }  // namespace util

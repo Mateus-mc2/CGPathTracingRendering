@@ -17,7 +17,7 @@ class TriangularObject {
                      const std::vector<Eigen::Vector3i> &faces, const bool emissive_flag);
     ~TriangularObject() {}
 
-    Eigen::Vector3d GetIntersectionParameters(const Ray &ray);
+    double GetIntersectionParameter(const Ray &ray);
   private:
     static const double kEps;
 
