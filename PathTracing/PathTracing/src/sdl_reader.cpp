@@ -159,7 +159,6 @@ namespace io {
 
           quadrics_objects.push_back(new_quadric);
           std::cout << "Lido 'objectquadric': " << "te dana, mt coisa pra imprimir :P" <<std::endl;
-          sdl_object.quadrics_objects_.push_back(new_quadric);
         } else if (word == "object") {         // Objetos baseados em malhas trianguladas
           std::string obj_file_name;
           double red, green, blue, ka, kd, ks, kt, n;

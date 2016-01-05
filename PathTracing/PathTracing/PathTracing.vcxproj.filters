@@ -25,6 +25,12 @@
     <Filter Include="Source Files\util">
       <UniqueIdentifier>{8a01da3d-9bdf-4f5d-8c78-4edc27569303}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\pt_renderer">
+      <UniqueIdentifier>{7560c9aa-3dd4-4900-a6da-2dfd22c1abad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\pt_renderer">
+      <UniqueIdentifier>{37f2761e-c5ac-4f64-b2f9-4ab24dcc6f80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -47,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="src\obj_reader.cpp">
       <Filter>Source Files\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pt_renderer.cpp">
+      <Filter>Source Files\pt_renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="include\obj_reader.h">
       <Filter>Header Files\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pt_renderer.h">
+      <Filter>Header Files\pt_renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
