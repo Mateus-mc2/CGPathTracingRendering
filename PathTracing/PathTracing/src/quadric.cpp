@@ -30,7 +30,7 @@ Quadric::Quadric(const double &a, const double &b, const double &c, const double
   this->coefficients_(this->kCoeffD) = d;
 }
 
-double Quadric::GetIntersectionParameter(const Ray &ray, Vector3d &normal) {
+double Quadric::GetIntersectionParameter(const Ray &ray, Vector3d &normal) const {
   // Coefficients.
   double a = this->coefficients_(this->kCoeffA);
   double b = this->coefficients_(this->kCoeffB);

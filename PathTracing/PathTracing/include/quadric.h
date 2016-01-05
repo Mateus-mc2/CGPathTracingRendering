@@ -16,7 +16,7 @@ class InvalidCoefficientsVectorException : public UtilException {
     InvalidCoefficientsVectorException(const std::string &error_msg) : UtilException(error_msg) {}
 };
 
-class Quadric : public RenderableObject{
+class Quadric : public RenderableObject {
   public:
     // See http://mathworld.wolfram.com/QuadraticSurface.html to understand this notation.
     enum Index {kCoeffA, kCoeffB, kCoeffC,
@@ -30,7 +30,7 @@ class Quadric : public RenderableObject{
             const double &r, const double &d, const Material &material, const bool is_emissive);
     ~Quadric() {}
 
-    double GetIntersectionParameter(const Ray &ray, Eigen::Vector3d &normal);
+    double GetIntersectionParameter(const Ray &ray, Eigen::Vector3d &normal) const;
 
     // Accessors.
     Eigen::VectorXd coefficients() const { return this->coefficients_; }

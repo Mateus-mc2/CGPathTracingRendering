@@ -12,19 +12,19 @@ background 0.0 0.0 0.0
 ambient 0.5
 
 # Luz branca retangulo no centro do teto
-light luzcornell.obj 1.0 1.0 1.0 1.0
+# light luzcornell.obj 1.0 1.0 1.0 1.0
 
 npaths 10
 maxdepth 3
 tonemapping 1.0
 seed 9
 
-# TESTANDO QUADRICA - equação paramétrica: x^2 + y^2 - z = 0 (paraboloide).
-objectquadric 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 -0.5 0.0 1 1 1 1 1 0 0 1
+# TESTANDO QUADRICA - equação paramétrica: x^2 + y^2 + z = 0 (paraboloide).
+# objectquadric 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.5 0.0 1 1 1 1 1 0 0 1
 
 # TESTANDO LUZ PONTUAL
 # pointlight x y z red green blue intensity
-pointlight 0 6 0 1 1 1 0.8
+pointlight 0 3.8360 -24.9060 1 1 1 0.5
 
 # Aqui comeca a definicao das geometrias
 # Um arquivo para cada parede

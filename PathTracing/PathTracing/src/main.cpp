@@ -22,8 +22,8 @@ int main(int argc, char* argv[]) {
 
   // Processamento
   std::cout << "\n## Começo da renderização." << std::endl;
-  pt::PTRenderer pt_renderer;
-  cv::Mat rendered_img = pt_renderer.RenderScene(sdl_object);
+  pt::PTRenderer pt_renderer(sdl_object);
+  cv::Mat rendered_img = pt_renderer.RenderScene();
 
   // Escrita da imagem renderizada
   std::cout << "\n## Começo da exportação." << std::endl;

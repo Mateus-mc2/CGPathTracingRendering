@@ -98,5 +98,8 @@
     <ClInclude Include="include\pt_renderer.h">
       <Filter>Header Files\pt_renderer</Filter>
     </ClInclude>
+    <ClInclude Include="include\renderable_object.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

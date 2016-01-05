@@ -28,8 +28,8 @@ TriangularObject::TriangularObject(const Material &material,
     const Vector3d kNormal = kAB.cross(kAC);
 
     assert(!(math::IsAlmostEqual(kNormal(0), 0.0, this->kEps) &&
-             math::IsAlmostEqual(kNormal(0), 0.0, this->kEps) &&
-             math::IsAlmostEqual(kNormal(0), 0.0, this->kEps)));
+             math::IsAlmostEqual(kNormal(1), 0.0, this->kEps) &&
+             math::IsAlmostEqual(kNormal(2), 0.0, this->kEps)));
 
     // The last coefficient is the additive inverse of the dot product of kA and kNormal.
     this->planes_coeffs_[i] << kNormal(0), kNormal(1), kNormal(2), -kNormal.dot(kA);
@@ -53,7 +53,7 @@ bool TriangularObject::IsInnerPoint(const Vector3d barycentric_coordinates) cons
           alpha <= 1 && beta <= 1 && gamma <= 1);
 }
 
-double TriangularObject::GetIntersectionParameter(const Ray &ray, Vector3d &normal) {
+double TriangularObject::GetIntersectionParameter(const Ray &ray, Vector3d &normal) const {
   Vector4d ray_origin(ray.origin(0), ray.origin(1), ray.origin(2), 1);
 
   // Parameters to return.

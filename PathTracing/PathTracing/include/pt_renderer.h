@@ -7,19 +7,29 @@
 #ifndef PT_RENDERER_H
 #define PT_RENDERER_H
 
+#include <Eigen\Dense>
 #include <opencv2\core\core.hpp>
 
+#include "ray.h"
+#include "renderable_object.h"
 #include "sdl_object.h"
 
 namespace pt {
 
 class PTRenderer {
   public:
-    PTRenderer() {};
+    explicit PTRenderer(const util::SDLObject &scene) :kScene(scene) {};
     ~PTRenderer () {};
 
-    cv::Mat RenderScene(const util::SDLObject &scene);
+    cv::Mat RenderScene();
+  private:
+    util::SDLObject kScene;
 
+    Eigen::Vector3d TracePath(const util::Ray &ray);
+    void ApplyToneMapping(cv::Mat &image);
+    void GetNearestObjectAndIntersection(const util::Ray &ray,
+                                         util::RenderableObject **object,
+                                         double *parameter);
 };
 
 }  // namespace pt

@@ -18,7 +18,7 @@ class TriangularObject : public RenderableObject {
                      const std::vector<Eigen::Vector3i> &faces);
     ~TriangularObject() {}
 
-    double GetIntersectionParameter(const Ray &ray, Eigen::Vector3d &normal);
+    double GetIntersectionParameter(const Ray &ray, Eigen::Vector3d &normal) const;
   private:
     const std::vector<Eigen::Vector3d> kVertices;
     const std::vector<Eigen::Vector3i> kFaces;
