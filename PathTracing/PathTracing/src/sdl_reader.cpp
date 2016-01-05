@@ -93,7 +93,7 @@ namespace io {
 
           io::OBJReader obj_reader;
           obj_reader.ReadOBJ(file_directory, obj_file_name, new_vertices, new_faces);
-          util::TriangularObject new_triangular_obj(new_material, new_vertices, new_faces, true);
+          util::TriangularObject new_triangular_obj(new_material, true, new_vertices, new_faces);
 
           extense_lights.push_back(new_triangular_obj);
           std::cout << "@ Lida a luz " << obj_file_name << std::endl;
@@ -155,11 +155,10 @@ namespace io {
           sdl_file >> n;
 
           util::Material new_material(red, green, blue, ka, kd, ks, kt, n, 0);
-          util::Quadric  new_quadric(a, b, c, d, e, f, g, h, j, k, new_material);
+          util::Quadric  new_quadric(a, b, c, d, e, f, g, h, j, k, new_material, false);
 
           quadrics_objects.push_back(new_quadric);
           std::cout << "Lido 'objectquadric': " << "te dana, mt coisa pra imprimir :P" <<std::endl;
-          sdl_object.quadrics_objects_.push_back(new_quadric);
         } else if (word == "object") {         // Objetos baseados em malhas trianguladas
           std::string obj_file_name;
           double red, green, blue, ka, kd, ks, kt, n;
@@ -181,7 +180,7 @@ namespace io {
 
           io::OBJReader obj_reader;
           obj_reader.ReadOBJ(file_directory, obj_file_name, new_vertices, new_faces);
-          util::TriangularObject new_triangular_obj(new_material, new_vertices, new_faces, false);
+          util::TriangularObject new_triangular_obj(new_material, false, new_vertices, new_faces);
 
           triangular_objects.push_back(new_triangular_obj);
           std::cout << "@ Lido o objeto " << obj_file_name << std::endl;

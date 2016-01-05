@@ -5,9 +5,8 @@
 
 #include <string>
 
-#include "material.h"
 #include "math_lib.h"
-#include "ray.h"
+#include "renderable_object.h"
 #include "util_exception.h"
 
 namespace util {
@@ -17,7 +16,7 @@ class InvalidCoefficientsVectorException : public UtilException {
     InvalidCoefficientsVectorException(const std::string &error_msg) : UtilException(error_msg) {}
 };
 
-class Quadric {
+class Quadric : public RenderableObject{
   public:
     // See http://mathworld.wolfram.com/QuadraticSurface.html to understand this notation.
     enum Index {kCoeffA, kCoeffB, kCoeffC,
@@ -25,22 +24,18 @@ class Quadric {
                 kCoeffP, kCoeffQ, kCoeffR,
                 kCoeffD};
 
-    Quadric(const Eigen::VectorXd &coefficients, const Material &material);
+    Quadric(const Eigen::VectorXd &coefficients, const Material &material, const bool is_emissive);
     Quadric(const double &a, const double &b, const double &c, const double &f,
             const double &g, const double &h, const double &p, const double &q,
-            const double &r, const double &d, const Material &material);
+            const double &r, const double &d, const Material &material, const bool is_emissive);
     ~Quadric() {}
 
-    double GetIntesectionParameter(const Ray &ray);
+    double GetIntersectionParameter(const Ray &ray, Eigen::Vector3d &normal);
 
     // Accessors.
     Eigen::VectorXd coefficients() const { return this->coefficients_; }
-    Material material() const { return this->material_; }
   private:
-    static const double kEps;
-
     Eigen::VectorXd coefficients_;
-    Material material_;    
 };
 
 }  // namespace util

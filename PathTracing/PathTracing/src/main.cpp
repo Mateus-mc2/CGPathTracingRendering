@@ -32,7 +32,7 @@ int main() {
 
   try {
     util::Material mat(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 10, 0);
-    util::Quadric random_quadric(v, mat);
+    util::Quadric random_quadric(v, mat, false);
 
     std::cout << v << std::endl << "------" << std::endl;
     std::cout << random_quadric.coefficients() << std::endl;
@@ -95,7 +95,11 @@ int main() {
 
   util::Ray line(p_0, v_2, depth);
   // Resultado deve ser t = 0.5
-  std::cout << "Intersecao: " << paraboloid.GetIntesectionParameter(line) << std::endl;
+  Vector3d normal;
+  std::cout << "Intersecao: " << paraboloid.GetIntersectionParameter(line, normal) << std::endl;
+  std::cout << "Normal: " << normal << std::endl;
+  std::cout << "Norma do vetor normal: " << normal.norm() << std::endl;
+  system("pause");
 
   return 0;
 }

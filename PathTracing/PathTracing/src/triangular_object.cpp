@@ -6,16 +6,13 @@ using Eigen::Matrix3d;
 
 namespace util {
 
-const double TriangularObject::kEps = 1.0e-03;
-
 TriangularObject::TriangularObject(const Material &material,
+                                   const bool is_emissive,
                                    const std::vector<Eigen::Vector3d> &vertices,
-                                   const std::vector<Eigen::Vector3i> &faces,
-                                   const bool emissive_flag)
-      :  kMaterial(material),
+                                   const std::vector<Eigen::Vector3i> &faces)
+      :  RenderableObject(material, is_emissive),
          kVertices(vertices),
-         kFaces(faces),
-         kEmissive(emissive_flag) {
+         kFaces(faces) {
   const int kNumFaces = faces.size();
   this->planes_coeffs_.resize(kNumFaces);
   this->linear_systems_.resize(kNumFaces);
@@ -29,6 +26,10 @@ TriangularObject::TriangularObject(const Material &material,
     const Vector3d kAB = kB - kA;
     const Vector3d kAC = kC - kA;
     const Vector3d kNormal = kAB.cross(kAC);
+
+    assert(!(math::IsAlmostEqual(kNormal(0), 0.0, this->kEps) &&
+             math::IsAlmostEqual(kNormal(0), 0.0, this->kEps) &&
+             math::IsAlmostEqual(kNormal(0), 0.0, this->kEps)));
 
     // The last coefficient is the additive inverse of the dot product of kA and kNormal.
     this->planes_coeffs_[i] << kNormal(0), kNormal(1), kNormal(2), -kNormal.dot(kA);
@@ -52,7 +53,7 @@ bool TriangularObject::IsInnerPoint(const Vector3d barycentric_coordinates) cons
           alpha <= 1 && beta <= 1 && gamma <= 1);
 }
 
-double TriangularObject::GetIntersectionParameter(const Ray &ray) {
+double TriangularObject::GetIntersectionParameter(const Ray &ray, Vector3d &normal) {
   Vector4d ray_origin(ray.origin(0), ray.origin(1), ray.origin(2), 1);
 
   // Parameters to return.
@@ -61,8 +62,11 @@ double TriangularObject::GetIntersectionParameter(const Ray &ray) {
 
   // Get nearest intersection point - need to check every single face of the object.
   for (int i = 0; i < this->planes_coeffs_.size(); ++i) {
-    const double kNumerator = -(this->planes_coeffs_[i].dot(ray_origin));
-    const double kDenominator = this->planes_coeffs_[i].dot(ray.direction);
+    const Vector3d kCurrentNormal(this->planes_coeffs_[i](0),
+                                  this->planes_coeffs_[i](1),
+                                  this->planes_coeffs_[i](2));
+    const double kNumerator = -(this->planes_coeffs_[i].dot(ray_origin));    
+    const double kDenominator = kCurrentNormal.dot(ray.direction);
 
     // Test if the ray and this plane are parallel (or if this plane contains the ray).
     // Returns a negative (dummy) parameter t if this happens.
@@ -79,7 +83,14 @@ double TriangularObject::GetIntersectionParameter(const Ray &ray) {
     if (this->IsInnerPoint(barycentric_coords) && min_t > curr_t && curr_t > this->kEps) {
       min_t = curr_t;
       parameters = barycentric_coords;
+
+      normal = kCurrentNormal;
+      normal = normal / normal.norm();
     }
+  }
+
+  if (normal.dot(ray.direction) < 0.0) {
+    normal = -normal;
   }
 
   return min_t;

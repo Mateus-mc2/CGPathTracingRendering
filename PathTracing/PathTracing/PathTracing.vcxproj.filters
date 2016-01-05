@@ -86,5 +86,8 @@
     <ClInclude Include="include\obj_reader.h">
       <Filter>Header Files\io</Filter>
     </ClInclude>
+    <ClInclude Include="include\renderable_object.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

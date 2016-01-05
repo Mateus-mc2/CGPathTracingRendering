@@ -6,26 +6,23 @@
 #include <vector>
 
 #include "math_lib.h"
-#include "material.h"
-#include "ray.h"
+#include "renderable_object.h"
 
 namespace util {
 
-class TriangularObject {
+class TriangularObject : public RenderableObject {
   public:
-    TriangularObject(const Material &material, const std::vector<Eigen::Vector3d> &vertices,
-                     const std::vector<Eigen::Vector3i> &faces, const bool emissive_flag);
+    TriangularObject(const Material &material,
+                     const bool is_emissive,
+                     const std::vector<Eigen::Vector3d> &vertices,
+                     const std::vector<Eigen::Vector3i> &faces);
     ~TriangularObject() {}
 
-    double GetIntersectionParameter(const Ray &ray);
+    double GetIntersectionParameter(const Ray &ray, Eigen::Vector3d &normal);
   private:
-    static const double kEps;
-
-    const Material kMaterial;
     const std::vector<Eigen::Vector3d> kVertices;
     const std::vector<Eigen::Vector3i> kFaces;
-    const bool kEmissive;
-
+    
     bool IsInnerPoint(const Eigen::Vector3d barycentric_coordinates) const;
 
     std::vector<Eigen::Vector4d> planes_coeffs_;

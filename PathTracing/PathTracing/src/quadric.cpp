@@ -4,12 +4,10 @@ using Eigen::Vector3d;
 using Eigen::VectorXd;
 
 namespace util {
-  
-const double Quadric::kEps = 1.0e-03;
 
-Quadric::Quadric(const VectorXd &coefficients, const Material &material)
-      : coefficients_(coefficients),
-        material_(material) {
+Quadric::Quadric(const VectorXd &coefficients, const Material &material, const bool is_emissive)
+      :  RenderableObject(material, is_emissive),
+         coefficients_(coefficients) {
   if (coefficients.size() != 10) {
     throw InvalidCoefficientsVectorException("Coefficients' vector doesn't have a valid size.");
   }
@@ -17,8 +15,8 @@ Quadric::Quadric(const VectorXd &coefficients, const Material &material)
 
 Quadric::Quadric(const double &a, const double &b, const double &c, const double &f,
                  const double &g, const double &h, const double &p, const double &q,
-                 const double &r, const double &d, const Material &material) 
-                 :  material_(material) {
+                 const double &r, const double &d, const Material &material, const bool is_emissive) 
+                 :  RenderableObject(material, is_emissive) {
   this->coefficients_.resize(10);
   this->coefficients_(this->kCoeffA) = a;
   this->coefficients_(this->kCoeffB) = b;
@@ -32,8 +30,7 @@ Quadric::Quadric(const double &a, const double &b, const double &c, const double
   this->coefficients_(this->kCoeffD) = d;
 }
 
-
-double Quadric::GetIntesectionParameter(const Ray &ray) {
+double Quadric::GetIntersectionParameter(const Ray &ray, Vector3d &normal) {
   // Coefficients.
   double a = this->coefficients_(this->kCoeffA);
   double b = this->coefficients_(this->kCoeffB);
@@ -96,6 +93,24 @@ double Quadric::GetIntesectionParameter(const Ray &ray) {
 
   if (t < this->kEps) {  // If it's negative or almost zero.
     return -1.0;
+  } else {  // Get normal from this point - must get the gradient from the implicit equation.
+    double x = x_0 + t*dx;
+    double y = y_0 + t*dy;
+    double z = z_0 + t*dz;
+
+    normal(0) = 2*(a*x + g*z + h*y + p);
+    normal(1) = 2*(b*y + f*z + h*x + q);
+    normal(2) = 2*(c*z + f*y + g*x + r);
+
+    if (!(math::IsAlmostEqual(normal(0), 0.0, this->kEps) &&
+          math::IsAlmostEqual(normal(1), 0.0, this->kEps) &&
+          math::IsAlmostEqual(normal(2), 0.0, this->kEps))) {
+      normal = normal / normal.norm();
+    }
+
+    if (normal.dot(ray.direction) < 0.0) {
+      normal = -normal;
+    }
   }
 
   return t;
