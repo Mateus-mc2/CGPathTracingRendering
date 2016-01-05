@@ -150,6 +150,7 @@
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\obj_reader.cpp" />
     <ClCompile Include="src\pnm_writer.cpp" />
+    <ClCompile Include="src\pt_renderer.cpp" />
     <ClCompile Include="src\quadric.cpp" />
     <ClCompile Include="src\sdl_reader.cpp" />
     <ClCompile Include="src\triangular_object.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="include\math_lib.h" />
     <ClInclude Include="include\obj_reader.h" />
     <ClInclude Include="include\pnm_writer.h" />
+    <ClInclude Include="include\pt_renderer.h" />
     <ClInclude Include="include\quadric.h" />
     <ClInclude Include="include\ray.h" />
     <ClInclude Include="include\renderable_object.h" />
