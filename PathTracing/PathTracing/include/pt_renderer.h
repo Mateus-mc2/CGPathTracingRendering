@@ -10,6 +10,10 @@
 #include <Eigen\Dense>
 #include <opencv2\core\core.hpp>
 
+#include <cmath>
+#include <iostream>
+#include <random>
+
 #include "ray.h"
 #include "renderable_object.h"
 #include "sdl_object.h"
@@ -18,18 +22,27 @@ namespace pt {
 
 class PTRenderer {
   public:
-    explicit PTRenderer(const util::SDLObject &scene) :kScene(scene) {};
+    PTRenderer(const util::SDLObject &scene)
+      : scene_(scene),
+        generator_(std::default_random_engine(scene.random_seed_)), 
+        distribution_(std::uniform_real_distribution<double>(0, M_PI)) {}
     ~PTRenderer () {};
 
     cv::Mat RenderScene();
   private:
-    util::SDLObject kScene;
+    static const double kEps;
 
     Eigen::Vector3d TracePath(const util::Ray &ray);
+    Eigen::Vector3d GetRandomDirection(const Eigen::Vector3d &normal);
     void ApplyToneMapping(cv::Mat &image);
     void GetNearestObjectAndIntersection(const util::Ray &ray,
                                          util::RenderableObject **object,
-                                         double *parameter);
+                                         double *parameter,
+                                         Eigen::Vector3d *normal);
+
+    util::SDLObject scene_;
+    std::default_random_engine generator_;
+    std::uniform_real_distribution<double> distribution_;
 };
 
 }  // namespace pt

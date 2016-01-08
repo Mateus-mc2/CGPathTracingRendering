@@ -18,7 +18,8 @@ TriangularObject::TriangularObject(const Material &material,
   this->linear_systems_.resize(kNumFaces);
     
   for (int i = 0; i < kNumFaces; ++i) {
-    // Get plane equation (coefficients).
+    // Get plane equation (coefficients) - we are assuming the .obj files provide us the 
+    // correct orientation of the vertices.
     const Vector3d kA = vertices[faces[i](0)];
     const Vector3d kB = vertices[faces[i](1)];
     const Vector3d kC = vertices[faces[i](2)];
@@ -57,7 +58,7 @@ double TriangularObject::GetIntersectionParameter(const Ray &ray, Vector3d &norm
   Vector4d ray_origin(ray.origin(0), ray.origin(1), ray.origin(2), 1);
 
   // Parameters to return.
-  double min_t = 0.0;
+  double min_t = -1.0;
   Vector3d parameters;
 
   // Get nearest intersection point - need to check every single face of the object.
@@ -75,9 +76,7 @@ double TriangularObject::GetIntersectionParameter(const Ray &ray, Vector3d &norm
     }
 
     double curr_t = kNumerator / kDenominator;
-    Vector3d intersection_point(ray.origin(0) + ray.direction(0)*curr_t,
-                                ray.origin(1) + ray.direction(1)*curr_t,
-                                ray.origin(2) + ray.direction(2)*curr_t);
+    Vector3d intersection_point = ray.origin + curr_t*ray.direction;
     Vector3d barycentric_coords = this->linear_systems_[i]*intersection_point;  // x = A^(-1)*b.
 
     if (this->IsInnerPoint(barycentric_coords) && min_t > curr_t && curr_t > this->kEps) {
@@ -87,10 +86,6 @@ double TriangularObject::GetIntersectionParameter(const Ray &ray, Vector3d &norm
       normal = kCurrentNormal;
       normal = normal / normal.norm();
     }
-  }
-
-  if (normal.dot(ray.direction) < 0.0) {
-    normal = -normal;
   }
 
   return min_t;

@@ -8,23 +8,23 @@
 eye 0.0 0.0 5.7
 size 200 200
 ortho -1 -1 1 1
-background 0.0 0.0 0.0
+background 1.0 0.0 0.0
 ambient 0.5
 
 # Luz branca retangulo no centro do teto
 # light luzcornell.obj 1.0 1.0 1.0 1.0
 
-npaths 10
-maxdepth 3
+npaths 1
+maxdepth 1
 tonemapping 1.0
 seed 9
 
-# TESTANDO QUADRICA - equação paramétrica: x^2 + y^2 + z = 0 (paraboloide).
-# objectquadric 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.5 0.0 1 1 1 1 1 0 0 1
+# TESTANDO QUADRICA - equação paramétrica: x^2 + y^2 + z = 2 (paraboloide).
+objectquadric 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.5 99.0 1 1 1 1 1 0 0 1
 
 # TESTANDO LUZ PONTUAL
 # pointlight x y z red green blue intensity
-pointlight 0 3.8360 -24.9060 1 1 1 0.5
+pointlight 0.0 0.0 5.7 1 1 1 1.0
 
 # Aqui comeca a definicao das geometrias
 # Um arquivo para cada parede
@@ -35,25 +35,25 @@ pointlight 0 3.8360 -24.9060 1 1 1 0.5
 
 #object <name.obj> red green blue ka kd ks kt n
 
-# left wall RED
-object leftwall.obj 1.0 0.0 0.0 0.3 0.7 0 0 5
-
-# right wall GREEN
-object rightwall.obj 0.0 1.0 0.0 0.3 0.7 0 0 5
-
-# floor WHITE
-object floor.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
-
-# back wall WHITE
-object back.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
-
-# ceiling WHITE
-object ceiling.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
-
-# cube 1 WHITE
-object cube1.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
-
-# cube 2 WHITE
-object cube2.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
+# # left wall RED
+# object leftwall.obj 1.0 0.0 0.0 0.3 0.7 0 0 5
+# 
+# # right wall GREEN
+# object rightwall.obj 0.0 1.0 0.0 0.3 0.7 0 0 5
+# 
+# # floor WHITE
+# object floor.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
+# 
+# # back wall WHITE
+# object back.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
+# 
+# # ceiling WHITE
+# object ceiling.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
+# 
+# # cube 1 WHITE
+# object cube1.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
+# 
+# # cube 2 WHITE
+# object cube2.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
 
 output cornell.pnm

@@ -107,10 +107,6 @@ double Quadric::GetIntersectionParameter(const Ray &ray, Vector3d &normal) const
           math::IsAlmostEqual(normal(2), 0.0, this->kEps))) {
       normal = normal / normal.norm();
     }
-
-    if (normal.dot(ray.direction) < 0.0) {
-      normal = -normal;
-    }
   }
 
   return t;
