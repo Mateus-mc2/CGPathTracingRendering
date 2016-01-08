@@ -10,35 +10,35 @@ void PNMWriter::WritePNMFile (const cv::Mat &image) {
 }
 
 void PNMWriter::WritePNMFile (const cv::Mat &image, std::string file_directory, std::string file_name) {
-  std::ofstream pnm_file;
-  pnm_file.open(file_directory + (file_name + ".pnm"));
+  //std::ofstream pnm_file;
+  //pnm_file.open(file_directory + (file_name + ".pnm"));
 
-  // Cabeçalho
-  pnm_file << "P3" << std::endl;
-  pnm_file << "# " << file_name << std::endl;
-  pnm_file << image.cols << " " << image.rows << std::endl;
-  pnm_file << "255" << std::endl;
+  //// Cabeçalho
+  //pnm_file << "P3" << std::endl;
+  //pnm_file << "# " << file_name << std::endl;
+  //pnm_file << image.cols << " " << image.rows << std::endl;
+  //pnm_file << "255" << std::endl;
 
-  // Valores dos pixels
-  for (int i=0; i < image.rows; ++i) {
-    for (int j=0; j < image.cols; ++j) {
-      unsigned char b = image.data[i*(image.cols*3)+j*3+0];
-      unsigned char g = image.data[i*(image.cols*3)+j*3+1];
-      unsigned char r = image.data[i*(image.cols*3)+j*3+2];
-      pnm_file << std::to_string(r) << std::endl;
-      pnm_file << std::to_string(g) << std::endl;
-      pnm_file << std::to_string(b) << std::endl;
-    }
-  }
+  //// Valores dos pixels
+  //for (int i=0; i < image.rows; ++i) {
+  //  for (int j=0; j < image.cols; ++j) {
+  //    unsigned char b = image.data[i*(image.cols*3)+j*3+0];
+  //    unsigned char g = image.data[i*(image.cols*3)+j*3+1];
+  //    unsigned char r = image.data[i*(image.cols*3)+j*3+2];
+  //    pnm_file << std::to_string(r) << std::endl;
+  //    pnm_file << std::to_string(g) << std::endl;
+  //    pnm_file << std::to_string(b) << std::endl;
+  //  }
+  //}
 
-  pnm_file.close();
+  //pnm_file.close();
 
-  // Parece que dá pra usar o OpenCV diretamente :'(
-  /*std::vector<int> compression_params;
+  // Dá pra usar o OpenCV diretamente!! :'(
+  std::vector<int> compression_params;
   compression_params.push_back(CV_IMWRITE_PXM_BINARY);
   compression_params.push_back(0);
 
-  cv::imwrite("res.pnm", image, compression_params);*/
+  cv::imwrite(file_directory + (file_name + ".pnm"), image, compression_params);
 }
 
 std::string PNMWriter::DateString() const {

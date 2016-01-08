@@ -9,6 +9,8 @@
 
 #include <Eigen\Dense>
 #include <opencv2\core\core.hpp>
+#include <opencv2\imgproc\imgproc.hpp>
+#include <opencv2\highgui\highgui.hpp>
 
 #include <cmath>
 #include <iostream>
@@ -25,7 +27,7 @@ class PTRenderer {
     PTRenderer(const util::SDLObject &scene)
       : scene_(scene),
         generator_(std::default_random_engine(scene.random_seed_)), 
-        distribution_(std::uniform_real_distribution<double>(0, M_PI)) {}
+        distribution_(std::uniform_real_distribution<double>(0, 1)) {}
     ~PTRenderer () {};
 
     cv::Mat RenderScene();

@@ -8,23 +8,37 @@
 eye 0.0 0.0 5.7
 size 200 200
 ortho -1 -1 1 1
-background 1.0 0.0 0.0
-ambient 0.5
+background 0.6 0.6 0.6
+ambient 0.2
 
 # Luz branca retangulo no centro do teto
 # light luzcornell.obj 1.0 1.0 1.0 1.0
 
-npaths 1
-maxdepth 1
+npaths 10
+maxdepth 3
 tonemapping 1.0
 seed 9
 
 # TESTANDO QUADRICA - equação paramétrica: x^2 + y^2 + z = 2 (paraboloide).
-objectquadric 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.5 99.0 1 1 1 1 1 0 0 1
+# objectquadric 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.5 99.0 0.8 0.4 0.1                 1 0.8 0.5 0 1
+# objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 -1.0 -1.0 10.0 98 0.8 0.4 0.2                 1 1 0.25 0 200
+# objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 1.0 1.0 10.0 101.75 0.8 0.4 0.2                 1 1 0.25 0 200
+
 
 # TESTANDO LUZ PONTUAL
 # pointlight x y z red green blue intensity
-pointlight 0.0 0.0 5.7 1 1 1 1.0
+# pointlight 0.0 0.0 5.7 0.5 0.5 0.5 0.3
+# pointlight 16.7 0.0 5.7 0 0.2 1 0.8
+
+# luz no canto superior esquerdo
+#pointlight -5.7 -5.7 -10.0 1 1 1 1.0
+
+pointlight -0.9100 3.5360 -23.3240 1 1 1 1
+pointlight -0.9100 3.5360 -26.4880 1 1 1 1
+pointlight 0.9100 3.5360 -26.4880 1 1 1 1
+pointlight 0.9100 3.5360 -23.3240 1 1 1 1
+pointlight 0 3.5360 -24.9060 1 1 1 1
+
 
 # Aqui comeca a definicao das geometrias
 # Um arquivo para cada parede
@@ -35,25 +49,25 @@ pointlight 0.0 0.0 5.7 1 1 1 1.0
 
 #object <name.obj> red green blue ka kd ks kt n
 
-# # left wall RED
-# object leftwall.obj 1.0 0.0 0.0 0.3 0.7 0 0 5
-# 
-# # right wall GREEN
-# object rightwall.obj 0.0 1.0 0.0 0.3 0.7 0 0 5
-# 
-# # floor WHITE
-# object floor.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
-# 
-# # back wall WHITE
-# object back.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
-# 
-# # ceiling WHITE
-# object ceiling.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
-# 
-# # cube 1 WHITE
-# object cube1.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
-# 
-# # cube 2 WHITE
-# object cube2.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
+# left wall RED
+object leftwall.obj 1.0 0.0 0.0 0.3 0.7 0 0 5
+
+# right wall GREEN
+object rightwall.obj 0.0 1.0 0.0 0.3 0.7 0 0 5
+
+# floor WHITE
+object floor.obj 1.0 1.0 1.0 0.3 0.2 0.7 0 5
+
+# back wall WHITE
+object back.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
+
+# ceiling WHITE
+object ceiling.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
+
+# cube 1 WHITE
+object cube1.obj 1.0 1.0 1.0 0.3 0.7 0 0.5 5
+
+# cube 2 WHITE
+object cube2.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
 
 output cornell.pnm

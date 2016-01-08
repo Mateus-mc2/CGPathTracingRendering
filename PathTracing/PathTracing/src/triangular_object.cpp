@@ -58,7 +58,7 @@ double TriangularObject::GetIntersectionParameter(const Ray &ray, Vector3d &norm
   Vector4d ray_origin(ray.origin(0), ray.origin(1), ray.origin(2), 1);
 
   // Parameters to return.
-  double min_t = -1.0;
+  double min_t = std::numeric_limits<double>::max();
   Vector3d parameters;
 
   // Get nearest intersection point - need to check every single face of the object.
