@@ -6,15 +6,15 @@
 # do Vinicius 6/12/2005
 
 eye 0.0 0.0 5.7
-size 200 200
+size 600 600
 ortho -1 -1 1 1
-background 0.6 0.6 0.6
-ambient 0.2
+background 0 0 0
+ambient 0.1
 
 # Luz branca retangulo no centro do teto
 # light luzcornell.obj 1.0 1.0 1.0 1.0
 
-npaths 10
+npaths 300
 maxdepth 3
 tonemapping 1.0
 seed 9
@@ -33,17 +33,17 @@ seed 9
 # luz no canto superior esquerdo
 #pointlight -5.7 -5.7 -10.0 1 1 1 1.0
 
-pointlight -0.9100 3.5360 -23.3240 1 1 1 1
-pointlight -0.9100 3.5360 -26.4880 1 1 1 1
-pointlight 0.9100 3.5360 -26.4880 1 1 1 1
-pointlight 0.9100 3.5360 -23.3240 1 1 1 1
-pointlight 0 3.5360 -24.9060 1 1 1 1
+# pointlight -0.9100 3.5360 -23.3240 1 1 1 1
+# pointlight -0.9100 3.5360 -26.4880 1 1 1 1
+# pointlight 0.9100 3.5360 -26.4880 1 1 1 1
+# pointlight 0.9100 3.5360 -23.3240 1 1 1 1
+pointlight 0 3.5360 -24.9060 1 1 1 0.8
 
 
 # Aqui comeca a definicao das geometrias
 # Um arquivo para cada parede
 # mais 2 arquivos com os cubos
-# As cores seguem a cena de Cornell
+# As cores seguem a cena de Cornell 
 # As paredes sao todas totalmente difusas
 # bem como os 2 cubos amarelos
 
@@ -56,7 +56,7 @@ object leftwall.obj 1.0 0.0 0.0 0.3 0.7 0 0 5
 object rightwall.obj 0.0 1.0 0.0 0.3 0.7 0 0 5
 
 # floor WHITE
-object floor.obj 1.0 1.0 1.0 0.3 0.2 0.7 0 5
+object floor.obj 1.0 1.0 1.0 0.3 0.2 0.5 0 100
 
 # back wall WHITE
 object back.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
@@ -65,7 +65,7 @@ object back.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
 object ceiling.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
 
 # cube 1 WHITE
-object cube1.obj 1.0 1.0 1.0 0.3 0.7 0 0.5 5
+object cube1.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
 
 # cube 2 WHITE
 object cube2.obj 1.0 1.0 1.0 0.3 0.7 0 0 5

@@ -69,7 +69,6 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
       
     }
 
-    // TODO: Fazer o teste de qual raio passara: difuso, especular, ou transmitido
     /*Seja ktot = kd+ks+kt  e um número aleatório R entre (0,ktot). Se R < kd então dispara raio difuso, 
     senão se R < kd+ks dispara raio especular, senão dispara raio transmitido. Para a direção do raio especular utilizar R=2N(NL) - L.
     Para estabelecermos uma direção aleatória (phi, theta) para o raio difuso, precisamos de 2 números aleatórios R1 e R2 no intervalo (0,1).
@@ -88,6 +87,13 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
       double r_2 = this->distribution_(this->generator_);
       double phi = std::acos(std::sqrt(r_1));
       double theta = 2*M_PI*r_2;
+      
+      Vector3d rand_direction(std::sin(phi)*std::cos(theta),
+                              std::sin(phi)*std::sin(theta),
+                              std::cos(phi));
+      util::Ray new_diffuse_ray(intersection_point, rand_direction , ray.depth + 1);
+      indirect_light = obj_material.k_d * this->TracePath(new_diffuse_ray);
+
     } else if (ray_type < obj_material.k_d + obj_material.k_s) { // Throw a specular ray
       Vector3d reflected = 2*normal*normal.dot(viewer) - viewer;
       reflected = reflected / reflected.norm();
@@ -97,7 +103,6 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
     } else {                                  // Throw a refracted ray
       util::Ray new_refracted_ray(intersection_point, -viewer, ray.depth + 1);  // TODO: colocar indice de refracao (lei de Snell)
       indirect_light = obj_material.k_t * this->TracePath(new_refracted_ray);
-
     }
 
     color += indirect_light;  // TODO: A recursao nao devia para apenas depois de calcular a parte direta nao? pq como ta sempre vai ter um background somando
