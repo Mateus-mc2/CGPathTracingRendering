@@ -13,14 +13,15 @@ class InvalidMaterialCoefficientsException : public UtilException {
 
 struct Material {
   Material () {}
-  Material(const double &r, const double &g, const double &b, const double &k_a,
-           const double &k_d, const double &k_s, const double &k_t, const int &n,
-           const double &lp);
+  Material(const double &r, const double &g, const double &b, const double &refraction_coeff,
+           const double &k_a, const double &k_d, const double &k_s, const double &k_t,
+           const int &n, const double &lp);
   ~Material() {}
   
   double red;   // Componente vermelha.
   double green; // Componente verde.
   double blue;  // Componente azul.
+  double refraction_coeff;  // Coeficiente de refração.
   
   // Relevantes aos objetos iluminados
   double k_a;  // Coeficiente de reflexão ambiente.

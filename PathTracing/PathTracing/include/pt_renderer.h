@@ -41,6 +41,8 @@ class PTRenderer {
                                          util::RenderableObject **object,
                                          double *parameter,
                                          Eigen::Vector3d *normal);
+    double ScaleLightIntensity(const util::PointLight &curr_light,
+                               const util::Ray &shadow_ray);
 
     util::SDLObject scene_;
     std::default_random_engine generator_;

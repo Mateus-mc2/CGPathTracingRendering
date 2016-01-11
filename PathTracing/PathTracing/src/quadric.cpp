@@ -91,25 +91,26 @@ double Quadric::GetIntersectionParameter(const Ray &ray, Vector3d &normal) const
     }
   }
 
-  if (t < this->kEps) {  // If it's negative or almost zero.
-    return -1.0;
-  } else {  // Get normal from this point - must get the gradient from the implicit equation.
-    double x = x_0 + t*dx;
-    double y = y_0 + t*dy;
-    double z = z_0 + t*dz;
+  // Get normal from this point - must get the gradient from the implicit equation.
+  double x = x_0 + t*dx;
+  double y = y_0 + t*dy;
+  double z = z_0 + t*dz;
 
-    normal(0) = 2*(a*x + g*z + h*y + p);
-    normal(1) = 2*(b*y + f*z + h*x + q);
-    normal(2) = 2*(c*z + f*y + g*x + r);
+  normal(0) = 2*(a*x + g*z + h*y + p);
+  normal(1) = 2*(b*y + f*z + h*x + q);
+  normal(2) = 2*(c*z + f*y + g*x + r);
 
-    if (!(math::IsAlmostEqual(normal(0), 0.0, this->kEps) &&
-          math::IsAlmostEqual(normal(1), 0.0, this->kEps) &&
-          math::IsAlmostEqual(normal(2), 0.0, this->kEps))) {
-      normal = normal / normal.norm();
-    }
+  if (!(math::IsAlmostEqual(normal(0), 0.0, this->kEps) &&
+        math::IsAlmostEqual(normal(1), 0.0, this->kEps) &&
+        math::IsAlmostEqual(normal(2), 0.0, this->kEps))) {
+    normal = normal / normal.norm();
   }
 
-  return t;
+  if (t < this->kEps) {  // If it's negative or almost zero.
+    return -1.0;
+  } else {    
+    return t;
+  }
 }
 
 }  // namespace util

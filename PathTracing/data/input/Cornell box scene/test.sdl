@@ -6,7 +6,7 @@
 # do Vinicius 6/12/2005
 
 eye 0.0 0.0 5.7
-size 600 600
+size 200 200
 ortho -1 -1 1 1
 background 0 0 0
 ambient 0.1
@@ -14,15 +14,15 @@ ambient 0.1
 # Luz branca retangulo no centro do teto
 # light luzcornell.obj 1.0 1.0 1.0 1.0
 
-npaths 300
-maxdepth 3
-tonemapping 1.0
+npaths 100
+maxdepth 7
+tonemapping 0.0
 seed 9
 
 # TESTANDO QUADRICA - equação paramétrica: x^2 + y^2 + z = 2 (paraboloide).
-# objectquadric 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.5 99.0 0.8 0.4 0.1                 1 0.8 0.5 0 1
-# objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 -1.0 -1.0 10.0 98 0.8 0.4 0.2                 1 1 0.25 0 200
-# objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 1.0 1.0 10.0 101.75 0.8 0.4 0.2                 1 1 0.25 0 200
+# objectquadric 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.5 99.0     0.8 0.4 0.1     1.33     1 0.8 0.5 0 1
+objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 -1.0 -1.0 10.0 101.75     1 1 1     1.5     0 0 0 1 5
+# objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 1.0 1.0 10.0 101.75     0.8 0.4 0.2     1.5     1 1 0.25 0 200
 
 
 # TESTANDO LUZ PONTUAL
@@ -47,27 +47,27 @@ pointlight 0 3.5360 -24.9060 1 1 1 0.8
 # As paredes sao todas totalmente difusas
 # bem como os 2 cubos amarelos
 
-#object <name.obj> red green blue ka kd ks kt n
+# object <name.obj> red green blue refraction_coefficient ka kd ks kt n
 
 # left wall RED
-object leftwall.obj 1.0 0.0 0.0 0.3 0.7 0 0 5
+object leftwall.obj 1.0 0.0 0.0     1.0     0.3 0.7 0.0 0.0 5
 
 # right wall GREEN
-object rightwall.obj 0.0 1.0 0.0 0.3 0.7 0 0 5
+object rightwall.obj 0.0 1.0 0.0     1.0     0.3 0.7 0.0 0.0 5
 
 # floor WHITE
-object floor.obj 1.0 1.0 1.0 0.3 0.2 0.5 0 100
+object floor.obj 1.0 1.0 1.0     1.0     0.3 0.2 0.0 0.0 100
 
 # back wall WHITE
-object back.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
+object back.obj 1.0 1.0 1.0     1.0     0.3 0.7 0.0 0.0 5
 
 # ceiling WHITE
-object ceiling.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
+object ceiling.obj 1.0 1.0 1.0     1.0     0.3 0.7 0.0 0.0 5
 
 # cube 1 WHITE
-object cube1.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
+object cube1.obj 1.0 1.0 1.0     1.5     0.3 0.1 0.0 0.9 5
 
 # cube 2 WHITE
-object cube2.obj 1.0 1.0 1.0 0.3 0.7 0 0 5
+object cube2.obj 1.0 1.0 1.0     1.33     0.3 0.1 0.25 0.9 5
 
 output cornell.pnm

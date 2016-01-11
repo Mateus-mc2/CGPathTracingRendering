@@ -86,7 +86,7 @@ namespace io {
           sdl_file >> blue;
           sdl_file >> lp;
 
-          util::Material new_material(red, green, blue, 0, 0, 0, 0, 1, lp);
+          util::Material new_material(red, green, blue, 1, 0, 0, 0, 0, 1, lp);
 
           std::vector<Eigen::Vector3d> new_vertices;
           std::vector<Eigen::Vector3i> new_faces;
@@ -134,7 +134,7 @@ namespace io {
           std::cout << "Lido 'seed': " << random_seed << std::endl;
 
         } else if (word == "objectquadric") {  // Objetos baseados em surpecifies parametricas
-          double a, b, c, d, e, f, g, h, j, k, red, green, blue, ka, kd, ks, kt, n;
+          double a, b, c, d, e, f, g, h, j, k, red, green, blue, refraction, ka, kd, ks, kt, n;
           sdl_file >> a;
           sdl_file >> b;
           sdl_file >> c;
@@ -148,32 +148,34 @@ namespace io {
           sdl_file >> red;
           sdl_file >> green;
           sdl_file >> blue;
+          sdl_file >> refraction;
           sdl_file >> ka;
           sdl_file >> kd;
           sdl_file >> ks;
           sdl_file >> kt;
           sdl_file >> n;
 
-          util::Material new_material(red, green, blue, ka, kd, ks, kt, n, 0);
+          util::Material new_material(red, green, blue, refraction, ka, kd, ks, kt, n, 0);
           util::Quadric  new_quadric(a, b, c, d, e, f, g, h, j, k, new_material, false);
 
           quadrics_objects.push_back(new_quadric);
           std::cout << "Lido 'objectquadric': " << "te dana, mt coisa pra imprimir :P" <<std::endl;
         } else if (word == "object") {         // Objetos baseados em malhas trianguladas
           std::string obj_file_name;
-          double red, green, blue, ka, kd, ks, kt, n;
+          double red, green, blue, refraction, ka, kd, ks, kt, n;
 
           sdl_file >> obj_file_name;
           sdl_file >> red;
           sdl_file >> green;
           sdl_file >> blue;
+          sdl_file >> refraction;
           sdl_file >> ka;
           sdl_file >> kd;
           sdl_file >> ks;
           sdl_file >> kt;
           sdl_file >> n;
 
-          util::Material new_material(red, green, blue, ka, kd, ks, kt, n, 0);
+          util::Material new_material(red, green, blue, refraction, ka, kd, ks, kt, n, 0);
 
           std::vector<Eigen::Vector3d> new_vertices;
           std::vector<Eigen::Vector3i> new_faces;
@@ -184,7 +186,6 @@ namespace io {
 
           triangular_objects.push_back(new_triangular_obj);
           std::cout << "@ Lido o objeto " << obj_file_name << std::endl;
-
         } else {
           std::cout << "  BORA BOY! token nao suportado: " << word << std::endl;
           std::cout << "    Leitura interrompida." << std::endl;
