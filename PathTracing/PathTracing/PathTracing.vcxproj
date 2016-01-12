@@ -135,6 +135,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)dependencies\opencv_2.4.10.1\install\include;$(SolutionDir)dependencies\eigen-eigen-6b38706d90a9</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

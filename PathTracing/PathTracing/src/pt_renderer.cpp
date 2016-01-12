@@ -382,6 +382,7 @@ cv::Mat PTRenderer::RenderScene() {
   if(this->scene_.antialiasing_) {  // Com anti-aliasing
     for (int i = 0; i < this->scene_.nmbr_paths_; ++i) {
       // Dispara um raio n vezes em um local randomico dentro do pixel
+      #pragma omp parallel for
       for (int j = 0; j < rendered_image.rows; ++j) {
         for (int k = 0; k < rendered_image.cols; ++k) {
           double x_t = this->distribution_(this->anti_aliasing_generator_);
@@ -412,6 +413,7 @@ cv::Mat PTRenderer::RenderScene() {
   } else {  // Sem anti-aliasing
     for (int i = 0; i < this->scene_.nmbr_paths_; ++i) {
       // Dispara um raio n vezes em um determinado pixel.
+      #pragma omp parallel for
       for (int j = 0; j < rendered_image.rows; ++j) {
         for (int k = 0; k < rendered_image.cols; ++k) {
           Vector3d looking_at((this->scene_.camera_.bottom_(0) + pixel_w / 2) + k*pixel_w,
