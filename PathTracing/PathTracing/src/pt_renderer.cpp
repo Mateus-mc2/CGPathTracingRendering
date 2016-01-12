@@ -244,7 +244,12 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
           objs_stack.push(object);
         } else {
           objs_stack.pop();
-          n_2 = objs_stack.top()->material().refraction_coeff;
+
+          if (objs_stack.empty()) {
+            n_2 = 1.0;
+          } else {
+            n_2 = objs_stack.top()->material().refraction_coeff;
+          }
         }        
       }
 
@@ -379,6 +384,7 @@ cv::Mat PTRenderer::RenderScene() {
   double pixel_h = (this->scene_.camera_.top_(1) - this->scene_.camera_.bottom_(1)) / this->scene_.camera_.height_;
   
   int percent;
+
   if(this->scene_.antialiasing_) {  // Com anti-aliasing
     for (int i = 0; i < this->scene_.nmbr_paths_; ++i) {
       // Dispara um raio n vezes em um local randomico dentro do pixel
