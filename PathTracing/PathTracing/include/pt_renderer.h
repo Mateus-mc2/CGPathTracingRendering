@@ -41,7 +41,8 @@ class PTRenderer {
                                          util::RenderableObject **object,
                                          double *parameter,
                                          Eigen::Vector3d *normal);
-    double ScaleLightIntensity(const util::PointLight &curr_light,
+    double ScaleLightIntensity(const double light_intensity,
+                               const Eigen::Vector3d &light_position,
                                const util::Ray &shadow_ray);
 
     util::SDLObject scene_;

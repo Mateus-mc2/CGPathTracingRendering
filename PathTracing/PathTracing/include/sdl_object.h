@@ -32,7 +32,8 @@ struct SDLObject {
             const double &tone_mapping,
             const int &random_seed,
             const std::vector<Quadric> &quadrics_objects,
-            const std::vector<TriangularObject> &triangular_objects)
+            const std::vector<TriangularObject> &triangular_objects,
+            const int &antialiasing)
       : file_name_(file_name),
         camera_(camera),
         background_color_(background_color),
@@ -44,7 +45,8 @@ struct SDLObject {
         tone_mapping_(tone_mapping),
         random_seed_(random_seed),
         quadrics_objects_(quadrics_objects),
-        triangular_objects_(triangular_objects) {}
+        triangular_objects_(triangular_objects),
+        antialiasing_(antialiasing) {}
 
   ~SDLObject() {};
 
@@ -60,6 +62,7 @@ struct SDLObject {
   int                           random_seed_;
   std::vector<Quadric>          quadrics_objects_;
   std::vector<TriangularObject> triangular_objects_;
+  int                           antialiasing_;
 };
 
 }  // namespace util

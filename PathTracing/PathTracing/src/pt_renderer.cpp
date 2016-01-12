@@ -21,16 +21,21 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
       return this->scene_.background_color_;
     }
 
-    //std::cout << "Bla" << std::endl;
-
     util::Material obj_material = object->material();
     Vector3d material_color(obj_material.red, obj_material.green, obj_material.blue);
     Vector3d color = this->scene_.ambient_light_intensity_*obj_material.k_a*material_color;
 
     Vector3d viewer = this->scene_.camera_.eye_ - intersection_point;
     viewer = viewer / viewer.norm();
-    
+
+    // Check if the object hit is emissive
+    if (object->emissive()) {
+      return material_color;
+    }
+
+    //## COMPONENTE DIRETA
     // Calcula-se a intensidade do objeto naquele ponto influenciada pelas fontes de luz na cena.
+    //# Luzes pontuais
     for (int i = 0; i < this->scene_.point_lights_.size(); ++i) {
       Vector3d light_direction =  this->scene_.point_lights_[i].position - intersection_point;
       light_direction = light_direction / light_direction.norm();
@@ -38,8 +43,9 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
       
       // Here we compute how much light is blockd by opaque and transparent surfaces, and use the
       // resulting intensity to scale diffuse and specular terms of the final color.
-      double light_intensity = this->ScaleLightIntensity(this->scene_.point_lights_[i],
-                                                         shadow_ray);
+      double light_intensity = this->ScaleLightIntensity(this->scene_.point_lights_[i].intensity,
+                                                           this->scene_.point_lights_[i].position,
+                                                           shadow_ray);
       double cos_theta = normal.dot(light_direction);
 
       if (cos_theta > 0.0) {
@@ -56,16 +62,90 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
       }
     }
 
-    // TODO(Mateus): implementar depois!
+    //# Luzes extensas
+    // Para cada vertice
+    Vector3d light_direction;
     for (int i = 0; i < this->scene_.extense_lights_.size(); ++i) {
+      for (int v = 0; v < this->scene_.extense_lights_[i].kVertices.size(); ++v) {
+        light_direction =  this->scene_.extense_lights_[i].kVertices[v] - intersection_point;
+        light_direction = light_direction / light_direction.norm();
+        util::Ray shadow_ray(intersection_point, light_direction, ray.ambient_objs, 1);
       
+        // Here we compute how much light is blockd by opaque and transparent surfaces, and use the
+        // resulting intensity to scale diffuse and specular terms of the final color.
+        double light_intensity = this->ScaleLightIntensity(this->scene_.extense_lights_[i].material().lp,
+                                                           this->scene_.extense_lights_[i].kVertices[v],
+                                                           shadow_ray);
+        double cos_theta = normal.dot(light_direction);
+
+        if (cos_theta > 0.0) {
+          Vector3d reflected = 2*normal*cos_theta - light_direction;
+          reflected = reflected / reflected.norm();
+        
+          double cos_alpha = reflected.dot(viewer);
+          Vector3d light_color(this->scene_.extense_lights_[i].material().red,
+                               this->scene_.extense_lights_[i].material().green,
+                               this->scene_.extense_lights_[i].material().blue);
+
+          color += light_intensity*(obj_material.k_d*material_color*cos_theta +
+                   obj_material.k_s*light_color*std::pow(cos_theta, obj_material.n));
+        }
+      }
     }
 
-    /*Seja ktot = kd+ks+kt  e um número aleatório R entre (0,ktot). Se R < kd então dispara raio difuso, 
-    senão se R < kd+ks dispara raio especular, senão dispara raio transmitido. Para a direção do raio especular utilizar R=2N(NL) - L.
-    Para estabelecermos uma direção aleatória (phi, theta) para o raio difuso, precisamos de 2 números aleatórios R1 e R2 no intervalo (0,1).
-    Então teremos phi=cos-1 (sqrt(R1)) e theta = 2.pi.R2.
-    */
+    // Para as areas dos triangulos
+    Vector3d light_origin;
+    Vector3d p1;
+    Vector3d p2;
+    Vector3d p3;
+    Vector3d v1;
+    Vector3d v2;
+    for (int i = 0; i < this->scene_.extense_lights_.size(); ++i) {
+      double light_density = this->scene_.extense_lights_[i].material().light_density;
+      // Itera para cada face, criando pontos de luz coerentes com a densidade da luz
+      for (int f = 0; f < this->scene_.extense_lights_[i].kFaces.size(); ++f) {
+        p1 = this->scene_.extense_lights_[i].kVertices[this->scene_.extense_lights_[i].kFaces[f][0]];
+        p2 = this->scene_.extense_lights_[i].kVertices[this->scene_.extense_lights_[i].kFaces[f][1]];
+        p3 = this->scene_.extense_lights_[i].kVertices[this->scene_.extense_lights_[i].kFaces[f][2]];
+        v1 = p2 - p1;
+        v2 = p3 - p1;
+        double a_max = v1.norm();
+        double b_max = v2.norm();
+        double a_step = light_density/a_max;
+        double b_step = light_density/b_max;
+
+        for (double a = a_step; a < 1; a += a_step) {
+          for (double b = b_step; b < 1; b += b_step) {
+            light_origin = p1 + a*v1 + b*v2;
+            light_direction =  light_origin - intersection_point;
+            light_direction = light_direction / light_direction.norm();
+            util::Ray shadow_ray(intersection_point, light_direction, ray.ambient_objs, 1);
+      
+            // Here we compute how much light is blockd by opaque and transparent surfaces, and use the
+            // resulting intensity to scale diffuse and specular terms of the final color.
+            double light_intensity = this->ScaleLightIntensity(this->scene_.extense_lights_[i].material().lp,
+                                                               light_origin,
+                                                               shadow_ray);
+            double cos_theta = normal.dot(light_direction);
+
+            if (cos_theta > 0.0) {
+              Vector3d reflected = 2*normal*cos_theta - light_direction;
+              reflected = reflected / reflected.norm();
+        
+              double cos_alpha = reflected.dot(viewer);
+              Vector3d light_color(this->scene_.extense_lights_[i].material().red,
+                                   this->scene_.extense_lights_[i].material().green,
+                                   this->scene_.extense_lights_[i].material().blue);
+
+              color += light_intensity*(obj_material.k_d*material_color*cos_theta +
+                       obj_material.k_s*light_color*std::pow(cos_theta, obj_material.n));
+            }
+          }
+        }
+      }
+    }
+
+    //## COMPONENTE INDIRETA
     double k_tot = obj_material.k_d + obj_material.k_s + obj_material.k_t;
     double ray_type = this->distribution_(this->generator_)*k_tot;
     Vector3d indirect_light;
@@ -138,7 +218,7 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
       }
     }
 
-    color += indirect_light;  // TODO: A recursao nao devia para apenas depois de calcular a parte direta nao? pq como ta sempre vai ter um background somando
+    color += indirect_light;
     
     // Clamp to guarantee that every ray returns a color r,g,b <= 1
     color[0] = std::min(color[0], 1.0);
@@ -166,6 +246,7 @@ void PTRenderer::GetNearestObjectAndIntersection(const util::Ray &ray,
   *parameter = std::numeric_limits<double>::max();
   Vector3d curr_normal;
 
+  // Objetos descritos por quadrica
   for (int i = 0; i < this->scene_.quadrics_objects_.size(); ++i) {
     double curr_t = this->scene_.quadrics_objects_[i].GetIntersectionParameter(ray, curr_normal);
     
@@ -176,6 +257,7 @@ void PTRenderer::GetNearestObjectAndIntersection(const util::Ray &ray,
     }
   }
 
+  // Objetos descritos por triangulos
   for (int i = 0; i < this->scene_.triangular_objects_.size(); ++i) {
     double curr_t = this->scene_.triangular_objects_[i].GetIntersectionParameter(ray, curr_normal);
     
@@ -185,17 +267,29 @@ void PTRenderer::GetNearestObjectAndIntersection(const util::Ray &ray,
       *normal = curr_normal;
     }
   }
+
+  // Objetos emissivos
+  for (int i = 0; i < this->scene_.extense_lights_.size(); ++i) {
+    double curr_t = this->scene_.extense_lights_[i].GetIntersectionParameter(ray, curr_normal);
+    
+    if (*parameter > curr_t && curr_t > 0.0) {
+      *object = &this->scene_.extense_lights_[i];
+      *parameter = curr_t;
+      *normal = curr_normal;
+    }
+  }
 }
 
 
-double PTRenderer::ScaleLightIntensity(const util::PointLight &curr_light,
+double PTRenderer::ScaleLightIntensity(const double light_intensity,
+                                       const Eigen::Vector3d &light_position,
                                        const util::Ray &shadow_ray) {
-  double final_intensity = curr_light.intensity;
+  double final_intensity = light_intensity;
   Vector3d normal;
   // Pega o índice do vetor diretor tal que v(idx) não seja zero. Ficou feioso assim, mas dane-se...
   const int idx = shadow_ray.direction(0) != 0? 0 : (shadow_ray.direction(1) != 0 ? 1 : 2);
   assert(shadow_ray.direction(idx) != 0);
-  const double kMaxT = (curr_light.position(idx) - shadow_ray.origin(idx)) / shadow_ray.direction(idx);
+  const double kMaxT = (light_position(idx) - shadow_ray.origin(idx)) / shadow_ray.direction(idx);
 
   for (int i = 0; i < this->scene_.quadrics_objects_.size(); ++i) {
     util::Material obj_material = this->scene_.quadrics_objects_[i].material();
@@ -226,33 +320,64 @@ cv::Mat PTRenderer::RenderScene() {
   double pixel_h = (this->scene_.camera_.top_(1) - this->scene_.camera_.bottom_(1)) / this->scene_.camera_.height_;
   
   int percent;
+  if(this->scene_.antialiasing_) {  // Com anti-aliasing
+    for (int i = 0; i < this->scene_.nmbr_paths_; ++i) {
+      // Dispara um raio n vezes em um local randomico dentro do pixel
+      for (int j = 0; j < rendered_image.rows; ++j) {
+        for (int k = 0; k < rendered_image.cols; ++k) {
+          double x_t = this->distribution_(this->generator_);
+          double y_t = this->distribution_(this->generator_);
+          Vector3d looking_at((this->scene_.camera_.bottom_(0) + x_t*pixel_w) + k*pixel_w,
+                              (this->scene_.camera_.top_(1)    - y_t*pixel_h) - j*pixel_h,
+                              0.0);
+          Vector3d direction = looking_at - this->scene_.camera_.eye_;
+          direction = direction / direction.norm();
 
-  for (int i = 0; i < this->scene_.nmbr_paths_; ++i) {
-    // Dispara um raio n vezes em um determinado pixel.
-    for (int j = 0; j < rendered_image.rows; ++j) {
-      for (int k = 0; k < rendered_image.cols; ++k) {
-        Vector3d looking_at((this->scene_.camera_.bottom_(0) + pixel_w / 2) + k*pixel_w,
-                            (this->scene_.camera_.top_(1)    - pixel_h / 2) - j*pixel_h,
-                            0.0);
-        Vector3d direction = looking_at - this->scene_.camera_.eye_;
-        direction = direction / direction.norm();
+          util::Ray ray(this->scene_.camera_.eye_, direction, 1);
+          Vector3d additional_color = this->TracePath(ray);
 
-        util::Ray ray(this->scene_.camera_.eye_, direction, 1);
-        Vector3d additional_color = this->TracePath(ray);
-
-        rendered_image.at<cv::Vec3d>(j, k)[0] += additional_color(2);
-        rendered_image.at<cv::Vec3d>(j, k)[1] += additional_color(1);
-        rendered_image.at<cv::Vec3d>(j, k)[2] += additional_color(0);        
+          rendered_image.at<cv::Vec3d>(j, k)[0] += additional_color(2);
+          rendered_image.at<cv::Vec3d>(j, k)[1] += additional_color(1);
+          rendered_image.at<cv::Vec3d>(j, k)[2] += additional_color(0);
+        }
       }
-    }
 
-    percent = int(100.0*(double(i) / this->scene_.nmbr_paths_));
-    std::cout << "\r" << percent << "% completed: ";
-    std::cout << std::string(percent/10, '@') << std::string(10 - percent/10, '=');
-    std::cout.flush();
-    parcial_result = rendered_image / i;
-    cv::imshow("parcial_result", parcial_result);
-    cv::waitKey(1);
+      percent = int(100.0*(double(i) / this->scene_.nmbr_paths_));
+      std::cout << "\r" << percent << "% completed ("<<i<<" raios): ";
+      std::cout << std::string(percent/10, '@') << std::string(10 - percent/10, '=');
+      std::cout.flush();
+      parcial_result = rendered_image / i;
+      cv::imshow("parcial_result", parcial_result);
+      cv::waitKey(1);
+    }
+  } else {  // Sem anti-aliasing
+    for (int i = 0; i < this->scene_.nmbr_paths_; ++i) {
+      // Dispara um raio n vezes em um determinado pixel.
+      for (int j = 0; j < rendered_image.rows; ++j) {
+        for (int k = 0; k < rendered_image.cols; ++k) {
+          Vector3d looking_at((this->scene_.camera_.bottom_(0) + pixel_w / 2) + k*pixel_w,
+                              (this->scene_.camera_.top_(1)    - pixel_h / 2) - j*pixel_h,
+                              0.0);
+          Vector3d direction = looking_at - this->scene_.camera_.eye_;
+          direction = direction / direction.norm();
+
+          util::Ray ray(this->scene_.camera_.eye_, direction, 1);
+          Vector3d additional_color = this->TracePath(ray);
+
+          rendered_image.at<cv::Vec3d>(j, k)[0] += additional_color(2);
+          rendered_image.at<cv::Vec3d>(j, k)[1] += additional_color(1);
+          rendered_image.at<cv::Vec3d>(j, k)[2] += additional_color(0);
+        }
+      }
+
+      percent = int(100.0*(double(i) / this->scene_.nmbr_paths_));
+      std::cout << "\r" << percent << "% completed ("<<i<<" raios): ";
+      std::cout << std::string(percent/10, '@') << std::string(10 - percent/10, '=');
+      std::cout.flush();
+      parcial_result = rendered_image / i;
+      cv::imshow("parcial_result", parcial_result);
+      cv::waitKey(1);
+    }
   }
 
   std::cout << std::endl;
@@ -261,8 +386,8 @@ cv::Mat PTRenderer::RenderScene() {
   rendered_image = rendered_image / this->scene_.nmbr_paths_;
   cv::imshow("divided by N_paths image", rendered_image);
 
-  this->ApplyToneMapping(rendered_image);
-  cv::imshow("tone_mapped image", rendered_image);
+  //this->ApplyToneMapping(rendered_image);
+  //cv::imshow("tone_mapped image", rendered_image);
 
   std::cout << "Aperte alguma tecla para fechar as imagens" << std::endl;
   cv::waitKey(0);
@@ -270,3 +395,4 @@ cv::Mat PTRenderer::RenderScene() {
 }
 
 }  // namespace pt
+

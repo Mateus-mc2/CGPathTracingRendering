@@ -15,7 +15,7 @@ struct Material {
   Material () {}
   Material(const double &r, const double &g, const double &b, const double &refraction_coeff,
            const double &k_a, const double &k_d, const double &k_s, const double &k_t,
-           const int &n, const double &lp);
+           const int &n, const double &lp,const double &light_density);
   ~Material() {}
   
   double red;   // Componente vermelha.
@@ -32,6 +32,7 @@ struct Material {
 
   // Relevantes aos objetos luminosos
   double lp;
+  double light_density;
 };
 
 }  // namespace util

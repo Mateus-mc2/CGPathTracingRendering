@@ -19,10 +19,10 @@ class TriangularObject : public RenderableObject {
     ~TriangularObject() {}
 
     double GetIntersectionParameter(const Ray &ray, Eigen::Vector3d &normal) const;
-  private:
     const std::vector<Eigen::Vector3d> kVertices;
     const std::vector<Eigen::Vector3i> kFaces;
-    
+
+  private:
     bool IsInnerPoint(const Eigen::Vector3d barycentric_coordinates) const;
 
     std::vector<Eigen::Vector4d> planes_coeffs_;

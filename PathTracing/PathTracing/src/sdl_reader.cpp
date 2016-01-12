@@ -20,6 +20,7 @@ namespace io {
     int                                 random_seed;
     std::vector<util::Quadric>          quadrics_objects;
     std::vector<util::TriangularObject> triangular_objects;
+    int                                 antialiasing;
 
     std::ifstream sdl_file(file_directory + file_name);
     std::string word;
@@ -78,15 +79,16 @@ namespace io {
 
         } else if (word == "light") {          // Luzes extensas
           std::string obj_file_name;
-          double red, green, blue, lp;
+          double red, green, blue, lp, light_density;
 
           sdl_file >> obj_file_name;
           sdl_file >> red;
           sdl_file >> green;
           sdl_file >> blue;
           sdl_file >> lp;
+          sdl_file >> light_density;
 
-          util::Material new_material(red, green, blue, 1, 0, 0, 0, 0, 1, lp);
+          util::Material new_material(red, green, blue, 1, 0, 0, 0, 0, 1, lp, light_density);
 
           std::vector<Eigen::Vector3d> new_vertices;
           std::vector<Eigen::Vector3i> new_faces;
@@ -155,7 +157,7 @@ namespace io {
           sdl_file >> kt;
           sdl_file >> n;
 
-          util::Material new_material(red, green, blue, refraction, ka, kd, ks, kt, n, 0);
+          util::Material new_material(red, green, blue, refraction, ka, kd, ks, kt, n, 0, 0);
           util::Quadric  new_quadric(a, b, c, d, e, f, g, h, j, k, new_material, false);
 
           quadrics_objects.push_back(new_quadric);
@@ -175,7 +177,7 @@ namespace io {
           sdl_file >> kt;
           sdl_file >> n;
 
-          util::Material new_material(red, green, blue, refraction, ka, kd, ks, kt, n, 0);
+          util::Material new_material(red, green, blue, refraction, ka, kd, ks, kt, n, 0, 0);
 
           std::vector<Eigen::Vector3d> new_vertices;
           std::vector<Eigen::Vector3i> new_faces;
@@ -186,6 +188,11 @@ namespace io {
 
           triangular_objects.push_back(new_triangular_obj);
           std::cout << "@ Lido o objeto " << obj_file_name << std::endl;
+
+        } else if(word == "antialiasing") {
+          sdl_file >> antialiasing;
+          std::cout << "@ Lido antialiasing " << antialiasing << std::endl;
+
         } else {
           std::cout << "  BORA BOY! token nao suportado: " << word << std::endl;
           std::cout << "    Leitura interrompida." << std::endl;
@@ -200,7 +207,7 @@ namespace io {
     util::Camera new_camera(eye, bottom, top, width, height);
     return util::SDLObject(output_name, new_camera, background_color, ambient_light_intensity,
                            point_lights, extense_lights, nmbr_paths, max_depth, tone_mapping,
-                           random_seed, quadrics_objects, triangular_objects);
+                           random_seed, quadrics_objects, triangular_objects, antialiasing);
     }
   }
 }  // namespace io

@@ -6,22 +6,23 @@
 # do Vinicius 6/12/2005
 
 eye 0.0 0.0 5.7
-size 200 200
+size 1000 1000
 ortho -1 -1 1 1
 background 0 0 0
 ambient 0.1
+antialiasing 1
 
 # Luz branca retangulo no centro do teto
-# light luzcornell.obj 1.0 1.0 1.0 1.0
+light luzcornell.obj 1.0 1.0 1.0 0.1 0.8
 
-npaths 100
-maxdepth 7
+npaths 400
+maxdepth 6
 tonemapping 0.0
 seed 9
 
 # TESTANDO QUADRICA - equação paramétrica: x^2 + y^2 + z = 2 (paraboloide).
 # objectquadric 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.5 99.0     0.8 0.4 0.1     1.33     1 0.8 0.5 0 1
-objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 -1.0 -1.0 10.0 101.75     1 1 1     1.5     0 0 0 1 5
+objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 -1.0 -1.0 10.0 101.75     1 1 1     1.5     0 0 0.2 0.8 5
 # objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 1.0 1.0 10.0 101.75     0.8 0.4 0.2     1.5     1 1 0.25 0 200
 
 
@@ -37,7 +38,7 @@ objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 -1.0 -1.0 10.0 101.75     1 1 1     1.5   
 # pointlight -0.9100 3.5360 -26.4880 1 1 1 1
 # pointlight 0.9100 3.5360 -26.4880 1 1 1 1
 # pointlight 0.9100 3.5360 -23.3240 1 1 1 1
-pointlight 0 3.5360 -24.9060 1 1 1 0.8
+# pointlight 0 3.5360 -24.9060 1 1 1 0.8
 
 
 # Aqui comeca a definicao das geometrias
@@ -65,9 +66,9 @@ object back.obj 1.0 1.0 1.0     1.0     0.3 0.7 0.0 0.0 5
 object ceiling.obj 1.0 1.0 1.0     1.0     0.3 0.7 0.0 0.0 5
 
 # cube 1 WHITE
-object cube1.obj 1.0 1.0 1.0     1.5     0.3 0.1 0.0 0.9 5
+object cube1.obj 1.0 1.0 1.0     1.5     0.3 0.7 0.1 0 5
 
 # cube 2 WHITE
-object cube2.obj 1.0 1.0 1.0     1.33     0.3 0.1 0.25 0.9 5
+object cube2.obj 1.0 1.0 1.0     1.33     0.3 0.1 0.4 0.5 5
 
 output cornell.pnm
