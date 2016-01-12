@@ -4,7 +4,8 @@ namespace util {
 
 Material::Material(const double &r, const double &g, const double &b, const double &refraction_coeff,
                    const double &k_a, const double &k_d, const double &k_s, const double &k_t,
-                   const int &n, const double &lp, const double &light_density)
+                   const int &n, const double &lp, const double &light_sampling_step,
+                   const double &light_density)
                    :  red(r),
                       green(g),
                       blue(b),
@@ -15,7 +16,8 @@ Material::Material(const double &r, const double &g, const double &b, const doub
                       k_t(k_t),
                       n(n),
                       lp(lp),
-                      light_density(light_density) {
+                      light_sampling_step(light_sampling_step),
+                      light_density(light_density){
   if (r < 0 || g < 0 || b < 0 || k_a < 0 || k_d < 0 || k_s < 0 || k_t < 0 || n <= 0 ||
       r > 1 || g > 1 || b > 1 || k_a > 1 || k_d > 1 || k_s > 1 || k_t > 1 || lp < 0 ||
       lp > 1 || refraction_coeff < 1) {

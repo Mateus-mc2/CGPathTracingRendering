@@ -13,6 +13,7 @@
 #include <opencv2\highgui\highgui.hpp>
 
 #include <cmath>
+#include <chrono>
 #include <iostream>
 #include <random>
 
@@ -47,6 +48,8 @@ class PTRenderer {
 
     util::SDLObject scene_;
     std::default_random_engine generator_;
+    std::default_random_engine anti_aliasing_generator_;
+    std::default_random_engine light_generator_;
     std::uniform_real_distribution<double> distribution_;
 };
 

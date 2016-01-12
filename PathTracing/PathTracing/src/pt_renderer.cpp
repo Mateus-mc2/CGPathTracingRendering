@@ -34,6 +34,7 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
     }
 
     //## COMPONENTE DIRETA
+    //Vector3d partial_contribution(0,0,0);
     // Calcula-se a intensidade do objeto naquele ponto influenciada pelas fontes de luz na cena.
     //# Luzes pontuais
     for (int i = 0; i < this->scene_.point_lights_.size(); ++i) {
@@ -44,8 +45,8 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
       // Here we compute how much light is blockd by opaque and transparent surfaces, and use the
       // resulting intensity to scale diffuse and specular terms of the final color.
       double light_intensity = this->ScaleLightIntensity(this->scene_.point_lights_[i].intensity,
-                                                           this->scene_.point_lights_[i].position,
-                                                           shadow_ray);
+                                                         this->scene_.point_lights_[i].position,
+                                                         shadow_ray);
       double cos_theta = normal.dot(light_direction);
 
       if (cos_theta > 0.0) {
@@ -56,14 +57,17 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
         Vector3d light_color(this->scene_.point_lights_[i].red, 
                              this->scene_.point_lights_[i].green,
                              this->scene_.point_lights_[i].blue);
-       
+
         color += light_intensity*(obj_material.k_d*material_color*cos_theta +
-                 obj_material.k_s*light_color*std::pow(cos_theta, obj_material.n));
+                                obj_material.k_s*light_color*std::pow(cos_theta, obj_material.n));
       }
     }
+    // 'normalize' to guarantee that the brightness of image is constant apart of pontual lights ammount
+    //color += partial_contribution/this->scene_.point_lights_.size();
 
     //# Luzes extensas
     // Para cada vertice
+    //partial_contribution = partial_contribution*0;  // clear partial_contribution
     Vector3d light_direction;
     for (int i = 0; i < this->scene_.extense_lights_.size(); ++i) {
       for (int v = 0; v < this->scene_.extense_lights_[i].kVertices.size(); ++v) {
@@ -88,10 +92,13 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
                                this->scene_.extense_lights_[i].material().blue);
 
           color += light_intensity*(obj_material.k_d*material_color*cos_theta +
-                   obj_material.k_s*light_color*std::pow(cos_theta, obj_material.n));
+                                  obj_material.k_s*light_color*std::pow(cos_theta, obj_material.n));
         }
       }
+      // 'normalize' to guarantee that the brightness of image is constant apart of extense light vertices ammount
+      //color += partial_contribution/this->scene_.extense_lights_[i].kVertices.size();
     }
+
 
     // Para as areas dos triangulos
     Vector3d light_origin;
@@ -100,23 +107,73 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
     Vector3d p3;
     Vector3d v1;
     Vector3d v2;
-    for (int i = 0; i < this->scene_.extense_lights_.size(); ++i) {
-      double light_density = this->scene_.extense_lights_[i].material().light_density;
-      // Itera para cada face, criando pontos de luz coerentes com a densidade da luz
-      for (int f = 0; f < this->scene_.extense_lights_[i].kFaces.size(); ++f) {
-        p1 = this->scene_.extense_lights_[i].kVertices[this->scene_.extense_lights_[i].kFaces[f][0]];
-        p2 = this->scene_.extense_lights_[i].kVertices[this->scene_.extense_lights_[i].kFaces[f][1]];
-        p3 = this->scene_.extense_lights_[i].kVertices[this->scene_.extense_lights_[i].kFaces[f][2]];
-        v1 = p2 - p1;
-        v2 = p3 - p1;
-        double a_max = v1.norm();
-        double b_max = v2.norm();
-        double a_step = light_density/a_max;
-        double b_step = light_density/b_max;
+    //partial_contribution = partial_contribution*0;  // clear partial_contribution
+    if (this->scene_.lightsamplingtype_ == 1) {
+      for (int i = 0; i < this->scene_.extense_lights_.size(); ++i) {
+        double light_sampling_step = this->scene_.extense_lights_[i].material().light_sampling_step;
+        // Itera para cada face, criando pontos de luz coerentes com a densidade da luz
+        for (int f = 0; f < this->scene_.extense_lights_[i].kFaces.size(); ++f) {
+          p1 = this->scene_.extense_lights_[i].kVertices[this->scene_.extense_lights_[i].kFaces[f][0]];
+          p2 = this->scene_.extense_lights_[i].kVertices[this->scene_.extense_lights_[i].kFaces[f][1]];
+          p3 = this->scene_.extense_lights_[i].kVertices[this->scene_.extense_lights_[i].kFaces[f][2]];
+          v1 = p2 - p1;
+          v2 = p3 - p1;
+          double a_max = v1.norm();
+          double b_max = v2.norm();
+          double a_step = light_sampling_step/a_max;
+          double b_step = light_sampling_step/b_max;
 
-        for (double a = a_step; a < 1; a += a_step) {
-          for (double b = b_step; b < 1; b += b_step) {
-            light_origin = p1 + a*v1 + b*v2;
+          for (double a = a_step; a < 1; a += a_step) {
+            for (double b = b_step; b < 1; b += b_step) {
+              light_origin = p1 + a*v1 + b*v2;
+              light_direction =  light_origin - intersection_point;
+              light_direction = light_direction / light_direction.norm();
+              util::Ray shadow_ray(intersection_point, light_direction, ray.ambient_objs, 1);
+      
+              // Here we compute how much light is blockd by opaque and transparent surfaces, and use the
+              // resulting intensity to scale diffuse and specular terms of the final color.
+              double light_intensity = this->ScaleLightIntensity(this->scene_.extense_lights_[i].material().lp,
+                                                                 light_origin,
+                                                                 shadow_ray);
+              double cos_theta = normal.dot(light_direction);
+
+              if (cos_theta > 0.0) {
+                Vector3d reflected = 2*normal*cos_theta - light_direction;
+                reflected = reflected / reflected.norm();
+
+                double cos_alpha = reflected.dot(viewer);
+                Vector3d light_color(this->scene_.extense_lights_[i].material().red,
+                                     this->scene_.extense_lights_[i].material().green,
+                                     this->scene_.extense_lights_[i].material().blue);
+
+                color += light_intensity*(obj_material.k_d*material_color*cos_theta +
+                         obj_material.k_s*light_color*std::pow(cos_theta, obj_material.n));
+              }
+            }
+          }
+          // 'normalize' to guarantee that the brightness of image is constant apart of sampling of light
+          //color += partial_contribution/std::floor(std::floor(1/a_step)*std::floor(b_step));
+        }
+      }
+    } else if (this->scene_.lightsamplingtype_ == 2) {
+      double area;
+      int n_rays;
+      for (int i = 0; i < this->scene_.extense_lights_.size(); ++i) {
+        double light_density = this->scene_.extense_lights_[i].material().light_density;
+        // Itera para cada face, criando pontos de luz coerentes com a densidade da luz
+        for (int f = 0; f < this->scene_.extense_lights_[i].kFaces.size(); ++f) {
+          p1 = this->scene_.extense_lights_[i].kVertices[this->scene_.extense_lights_[i].kFaces[f][0]];
+          p2 = this->scene_.extense_lights_[i].kVertices[this->scene_.extense_lights_[i].kFaces[f][1]];
+          p3 = this->scene_.extense_lights_[i].kVertices[this->scene_.extense_lights_[i].kFaces[f][2]];
+          v1 = p2 - p1;
+          v2 = p3 - p1;
+          area = v1.cross(v2).norm()/2;
+          n_rays = std::floor(area*light_density);
+
+          for (int r = 0; r < n_rays; ++r) {
+            double t1 = this->distribution_(this->light_generator_);
+            double t2 = this->distribution_(this->light_generator_);
+            light_origin = p1 + t1*v1 + t2*v2;
             light_direction =  light_origin - intersection_point;
             light_direction = light_direction / light_direction.norm();
             util::Ray shadow_ray(intersection_point, light_direction, ray.ambient_objs, 1);
@@ -124,8 +181,8 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
             // Here we compute how much light is blockd by opaque and transparent surfaces, and use the
             // resulting intensity to scale diffuse and specular terms of the final color.
             double light_intensity = this->ScaleLightIntensity(this->scene_.extense_lights_[i].material().lp,
-                                                               light_origin,
-                                                               shadow_ray);
+                                                                light_origin,
+                                                                shadow_ray);
             double cos_theta = normal.dot(light_direction);
 
             if (cos_theta > 0.0) {
@@ -134,13 +191,15 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
         
               double cos_alpha = reflected.dot(viewer);
               Vector3d light_color(this->scene_.extense_lights_[i].material().red,
-                                   this->scene_.extense_lights_[i].material().green,
-                                   this->scene_.extense_lights_[i].material().blue);
+                                    this->scene_.extense_lights_[i].material().green,
+                                    this->scene_.extense_lights_[i].material().blue);
 
               color += light_intensity*(obj_material.k_d*material_color*cos_theta +
-                       obj_material.k_s*light_color*std::pow(cos_theta, obj_material.n));
+                        obj_material.k_s*light_color*std::pow(cos_theta, obj_material.n));
             }
           }
+          // 'normalize' to guarantee that the brightness of image is constant apart of density of light
+          //color += partial_contribution/n_rays;
         }
       }
     }
@@ -219,7 +278,7 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
     }
 
     color += indirect_light;
-    
+
     // Clamp to guarantee that every ray returns a color r,g,b <= 1
     color[0] = std::min(color[0], 1.0);
     color[1] = std::min(color[1], 1.0);
@@ -325,8 +384,8 @@ cv::Mat PTRenderer::RenderScene() {
       // Dispara um raio n vezes em um local randomico dentro do pixel
       for (int j = 0; j < rendered_image.rows; ++j) {
         for (int k = 0; k < rendered_image.cols; ++k) {
-          double x_t = this->distribution_(this->generator_);
-          double y_t = this->distribution_(this->generator_);
+          double x_t = this->distribution_(this->anti_aliasing_generator_);
+          double y_t = this->distribution_(this->anti_aliasing_generator_);
           Vector3d looking_at((this->scene_.camera_.bottom_(0) + x_t*pixel_w) + k*pixel_w,
                               (this->scene_.camera_.top_(1)    - y_t*pixel_h) - j*pixel_h,
                               0.0);

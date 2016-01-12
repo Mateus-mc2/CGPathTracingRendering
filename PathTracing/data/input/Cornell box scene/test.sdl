@@ -6,17 +6,22 @@
 # do Vinicius 6/12/2005
 
 eye 0.0 0.0 5.7
-size 1000 1000
+size 300 300
 ortho -1 -1 1 1
 background 0 0 0
 ambient 0.1
-antialiasing 1
+### antialiasing -> 0- desabilitado; 1- habilitado;
+antialiasing 0
+### lightsamplingtype -> 1- grade; 2- area determina numero de raios randomicos no triangulo;
+lightsamplingtype 2
 
 # Luz branca retangulo no centro do teto
-light luzcornell.obj 1.0 1.0 1.0 0.1 0.8
+# light triangular_obj red green blue intensity light_sampling_step density
+# light luzcornell.obj 1.0 1.0 1.0 0.1 0.8 1.5
+light luzcornell.obj 1.0 1.0 1.0 0.4 0.8 4.2
 
-npaths 400
-maxdepth 6
+npaths 10
+maxdepth 3
 tonemapping 0.0
 seed 9
 
@@ -32,7 +37,7 @@ objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 -1.0 -1.0 10.0 101.75     1 1 1     1.5   
 # pointlight 16.7 0.0 5.7 0 0.2 1 0.8
 
 # luz no canto superior esquerdo
-#pointlight -5.7 -5.7 -10.0 1 1 1 1.0
+# pointlight -5.7 -5.7 -10.0 1 1 1 1.0
 
 # pointlight -0.9100 3.5360 -23.3240 1 1 1 1
 # pointlight -0.9100 3.5360 -26.4880 1 1 1 1
