@@ -25,7 +25,7 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
     Vector3d material_color(obj_material.red, obj_material.green, obj_material.blue);
     Vector3d color = this->scene_.ambient_light_intensity_*obj_material.k_a*material_color;
 
-    Vector3d viewer = this->scene_.camera_.eye_ - intersection_point;
+    Vector3d viewer = ray.origin - intersection_point;
     viewer = viewer / viewer.norm();
 
     // Check if the object hit is emissive
@@ -178,7 +178,7 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
             light_direction = light_direction / light_direction.norm();
             util::Ray shadow_ray(intersection_point, light_direction, ray.ambient_objs, 1);
       
-            // Here we compute how much light is blockd by opaque and transparent surfaces, and use the
+            // Here we compute how much light is blocked by opaque and transparent surfaces, and use the
             // resulting intensity to scale diffuse and specular terms of the final color.
             double light_intensity = this->ScaleLightIntensity(this->scene_.extense_lights_[i].material().lp,
                                                                 light_origin,
@@ -261,7 +261,7 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
       if (sin_theta_incident < (n_2 / n_1)) {
         // Get new refracted ray.
         double n_r = n_1 / n_2;
-        Vector3d refracted = (n_r*cos_theta_incident - std::sqrt(1 - 
+        Vector3d refracted = (n_r*cos_theta_incident - std::sqrt(1 -
                               std::pow(n_r, 2)*std::pow(sin_theta_incident, 2)))*normal
                               + n_r*ray.direction;
         // Need to update the stack of objects.
@@ -273,7 +273,7 @@ Vector3d PTRenderer::TracePath(const util::Ray &ray) {
                                                 total_internal_reflected,
                                                 ray.ambient_objs,
                                                 ray.depth + 1);
-        indirect_light = obj_material.k_s * this->TracePath(total_internal_reflection_ray);
+        indirect_light = this->TracePath(total_internal_reflection_ray);
       }
     }
 
@@ -379,6 +379,7 @@ cv::Mat PTRenderer::RenderScene() {
   double pixel_h = (this->scene_.camera_.top_(1) - this->scene_.camera_.bottom_(1)) / this->scene_.camera_.height_;
   
   int percent;
+  int processed_rays = this->scene_.nmbr_paths_;
   if(this->scene_.antialiasing_) {  // Com anti-aliasing
     for (int i = 0; i < this->scene_.nmbr_paths_; ++i) {
       // Dispara um raio n vezes em um local randomico dentro do pixel
@@ -408,7 +409,10 @@ cv::Mat PTRenderer::RenderScene() {
       std::cout.flush();
       parcial_result = rendered_image / i;
       cv::imshow("parcial_result", parcial_result);
-      cv::waitKey(1);
+      if (cv::waitKey(1) == 13) {
+        processed_rays = i+1;
+        break;
+      }
     }
   } else {  // Sem anti-aliasing
     for (int i = 0; i < this->scene_.nmbr_paths_; ++i) {
@@ -437,14 +441,17 @@ cv::Mat PTRenderer::RenderScene() {
       std::cout.flush();
       parcial_result = rendered_image / i;
       cv::imshow("parcial_result", parcial_result);
-      cv::waitKey(1);
+      if (cv::waitKey(1) == 13) {
+        processed_rays = i+1;
+        break;
+      }
     }
   }
 
-  std::cout << std::endl;
-  cv::imshow("virgin image", rendered_image);
+  //std::cout << std::endl;
+  //cv::imshow("virgin image", rendered_image);
   
-  rendered_image = rendered_image / this->scene_.nmbr_paths_;
+  rendered_image = rendered_image / processed_rays;
   cv::imshow("divided by N_paths image", rendered_image);
 
   //this->ApplyToneMapping(rendered_image);

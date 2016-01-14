@@ -18,18 +18,22 @@ lightsamplingtype 2
 # Luz branca retangulo no centro do teto
 # light triangular_obj red green blue intensity light_sampling_step density
 # light luzcornell.obj 1.0 1.0 1.0 0.1 0.8 1.5
-light luzcornell.obj 1.0 1.0 1.0 0.1 0.8 4.2
+#light luzcornell.obj 1.0 1.0 1.0 0.1 0.8 4.2
+light lft_luzcornell.obj   1.0 1.0 1.0 0.05 0.8 1
+light rgt_luzcornell.obj   1.0 1.0 1.0 0.05 0.8 1
+light back_luzcornell.obj  1.0 1.0 1.0 0.05 0.8 1
+light front_luzcornell.obj 1.0 1.0 1.0 0.05 0.8 1
 
-npaths 400
-maxdepth 7 
+npaths 200
+maxdepth 8 
 tonemapping 0.0
 seed 9
 
 # TESTANDO QUADRICA - equação paramétrica: x^2 + y^2 + z = 2 (paraboloide).
 # objectquadric 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.5 99.0     0.8 0.4 0.1     1.33     1 0.8 0.5 0 1
-objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 -1.0 -1.0 10.0 101.75     1 1 1     1.5     0 0 0.2 0.8 5
-# objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 1.0 1.0 10.0 101.75     0.8 0.4 0.2     1.5     1 1 0.25 0 200
-
+objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 -1.0 -1.0 20.0 401.3     0.4 0.8 0.2     1.2     0 1 0 0 5
+objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 1.0 1.0 20.0 401.3    0.2 0.4 0.8      1.5     0 1 0 0 100
+objectquadric 1.0 1.0 1.0 0.0 0.0 0.0 1.0 -1.0 20.0 401.3     0.8 0.4 0.2     1.5     0 1 0 0 200
 
 # TESTANDO LUZ PONTUAL
 # pointlight x y z red green blue intensity
@@ -65,15 +69,18 @@ object rightwall.obj 0.0 1.0 0.0     1.0     0.3 0.4 0.0 0.0 5
 object floor.obj 1.0 1.0 1.0     1.0     0.3 0.5 0.5 0.0 500
 
 # back wall WHITE
-object back.obj 0 0 0     1.0     0.1 0.4 0.6 0.0 500
+object back.obj 0 0 0     1.0     0 1 0 0 500
+
+# cam wall WHITE
+# object cam.obj 1 0 1     1.0     0 0 1 0 500
 
 # ceiling WHITE
 object ceiling.obj 1.0 1.0 1.0     1.0     0.3 0.7 0 0.0 5
 
 # cube 1 WHITE
-object cube1.obj 1.0 1.0 1.0     1.5     0.3 0.7 0.1 0 5
+#object cube1.obj 1.0 1.0 1.0     1.5     0.3 1 0 0 5
 
 # cube 2 WHITE
-object cube2.obj 1.0 1.0 1.0     1.33     0.3 0.8 0 0.5 5
+#object cube2.obj 1.0 1.0 1.0     1.33     0.3 1 0 0 5
 
 output cornell.pnm
