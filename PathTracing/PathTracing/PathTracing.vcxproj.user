@@ -3,17 +3,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>"../../../data/input/Cornell box scene/" "test.sdl" "../../../data/output/"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>"../../../data/input/Cornell box scene/" "test3.sdl" "../../../data/output/"</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>"../../../data/input/Cornell box scene/" "test.sdl" "../../../data/output/"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>"../../../data/input/Cornell box scene/" "test3.sdl" "../../../data/output/"</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>"../../../data/input/Cornell box scene/" "test.sdl" "../../../data/output/"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>"../../../data/input/Cornell box scene/" "test3.sdl" "../../../data/output/"</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
